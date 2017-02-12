@@ -26,6 +26,8 @@ public abstract class Message {
 
     public abstract List<Attachment<?>> attachments();
 
+    public abstract boolean isRead();
+
     public static Builder builder() {
         return new AutoValue_Message.Builder();
     }
@@ -42,6 +44,8 @@ public abstract class Message {
         public abstract Builder setTimeStamp(long timeStamp);
 
         public abstract Builder setAttachments(List<Attachment<?>> attachments);
+
+        public abstract Builder setIsRead(boolean isRead);
 
         public abstract Message build();
     }
