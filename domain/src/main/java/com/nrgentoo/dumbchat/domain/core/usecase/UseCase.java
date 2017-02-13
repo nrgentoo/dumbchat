@@ -1,11 +1,13 @@
 package com.nrgentoo.dumbchat.domain.core.usecase;
 
+import com.nrgentoo.dumbchat.domain.core.executor.PostExecutionThread;
+import com.nrgentoo.dumbchat.domain.core.executor.ThreadExecutor;
+
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-
-import com.nrgentoo.dumbchat.domain.core.executor.*;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
  * Abstract use case
@@ -25,7 +27,7 @@ public abstract class UseCase<R, P> {
         this.mPostExecutionThread = postExecutionThread;
     }
 
-    protected abstract Observable<R> buildObservable(P params);
+    protected abstract Flowable<R> buildObservable(P params);
 
     /**
      * Execute use case with observer
@@ -33,7 +35,7 @@ public abstract class UseCase<R, P> {
      * @param observer result observer
      * @param params parameters
      */
-    public void execute(DisposableObserver<R> observer, P params) {
+    public void execute(DisposableSubscriber<R> observer, P params) {
         checkSubscription();
 
         mDisposable = buildObservable(params)
@@ -48,7 +50,7 @@ public abstract class UseCase<R, P> {
      * @param params parameters
      * @return {@link Observable} of result
      */
-    public Observable<R> execute(P params) {
+    public Flowable<R> execute(P params) {
         return buildObservable(params);
     }
 

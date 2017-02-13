@@ -27,5 +27,5 @@ public interface EventsPort {
     /**
      * Broadcast event to all listeners
      */
-    <T extends Event> void broadcast(T event);
+    <T extends Event> void broadcast(Class<T> type, T event);
 }

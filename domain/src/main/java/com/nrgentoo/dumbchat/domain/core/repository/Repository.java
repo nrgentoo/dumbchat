@@ -1,6 +1,7 @@
 package com.nrgentoo.dumbchat.domain.core.repository;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Repository interface
@@ -21,7 +22,7 @@ public interface Repository<T> {
      *
      * @return {@link Collection} of entities
      */
-    Collection<T> getAll();
+    List<T> getAll();
 
     /**
      * Add new entity
