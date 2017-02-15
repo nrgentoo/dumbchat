@@ -4,6 +4,7 @@ import com.google.auto.value.AutoValue;
 import com.nrgentoo.dumbchat.domain.features.attachments.entity.Attachment;
 import com.nrgentoo.dumbchat.domain.features.users.entity.User;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -26,10 +27,9 @@ public abstract class Message {
 
     public abstract List<Attachment<?>> attachments();
 
-    public abstract boolean isRead();
-
     public static Builder builder() {
-        return new AutoValue_Message.Builder();
+        return new AutoValue_Message.Builder()
+                .setAttachments(Collections.emptyList());
     }
 
     @AutoValue.Builder
@@ -44,8 +44,6 @@ public abstract class Message {
         public abstract Builder setTimeStamp(long timeStamp);
 
         public abstract Builder setAttachments(List<Attachment<?>> attachments);
-
-        public abstract Builder setIsRead(boolean isRead);
 
         public abstract Message build();
     }

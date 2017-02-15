@@ -12,6 +12,8 @@ ext {
     androidCompileSdkVersion = 25
 
     // Libraries
+    final supportLibraryVersion = '25.1.0'
+
     final autovalueVersion = '1.3'
     final autovalueAnnotationsVersion = '1.3'
     final autovalueGsonVersion = '0.4.5'
@@ -40,6 +42,24 @@ ext {
     ]
 
     domainTestDependencies = [
+            junit:              "junit:junit:${jUnitVersion}",
+            mockito:            "org.mockito:mockito-core:${mockitoVersion}",
+            assertj:            "org.assertj:assertj-core:${assertJVersion}",
+    ]
+
+    dataDependencies = [
+            appcompat_v7:        "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            autovalue:              "com.google.auto.value:auto-value:$autovalueVersion",
+            autovalueAnnotations:   "com.jakewharton.auto.value:auto-value-annotations:" +
+                    "$autovalueAnnotationsVersion",
+            autovalueGson:          "com.ryanharter.auto.value:auto-value-gson:" +
+                    "${autovalueGsonVersion}",
+            javaxAnnotation:        "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            daggerCompiler:         "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger:                 "com.google.dagger:dagger:${daggerVersion}",
+    ]
+
+    dataTestDependencies = [
             junit:              "junit:junit:${jUnitVersion}",
             mockito:            "org.mockito:mockito-core:${mockitoVersion}",
             assertj:            "org.assertj:assertj-core:${assertJVersion}",

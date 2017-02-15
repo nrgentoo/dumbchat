@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 
@@ -12,14 +12,10 @@ android {
     defaultConfig {
         minSdkVersion globalConfig.getAt("androidMinSdkVersion")
         targetSdkVersion globalConfig.getAt("androidTargetSdkVersion")
-
-        applicationId globalConfig.getAt("androidApplicationId")
-
-        applicationId globalConfig.getAt("androidApplicationId")
         versionCode globalConfig.getAt("androidVersionCode")
         versionName globalConfig.getAt("androidVersionName")
+
         testInstrumentationRunner globalConfig.getAt("testInstrumentationRunner")
-        testApplicationId globalConfig.getAt("testApplicationId")
     }
 
     buildTypes {
@@ -28,13 +24,38 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    def deps = rootProject.ext.dataDependencies
+    def testDeps = rootProject.ext.dataTestDependencies
+
+    compile project(':domain')
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    testCompile 'junit:junit:4.12'
+
+    compile deps.appcompat_v7
+
+    provided deps.autovalueAnnotations
+    apt deps.autovalue
+    provided deps.autovalueGson
+    apt deps.autovalueGson
+
+    apt  deps.daggerCompiler
+    compile deps.dagger
+    provided deps.javaxAnnotation
+
+    testCompile testDeps.junit
+    testCompile testDeps.mockito
+    testCompile testDeps.assertj
+
+    testApt deps.daggerCompiler
+    testCompile deps.dagger
 }
