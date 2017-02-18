@@ -1,7 +1,8 @@
 package com.nrgentoo.dumbchat.data.features.bot;
 
-import com.nrgentoo.dumbchat.data.features.messages.model.MessageDto;
-import com.nrgentoo.dumbchat.data.features.users.model.UserDto;
+import com.nrgentoo.dumbchat.domain.features.bot.BotService;
+import com.nrgentoo.dumbchat.domain.features.messages.entity.Message;
+import com.nrgentoo.dumbchat.domain.features.users.entity.User;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -27,13 +28,14 @@ public class OfflineBotService implements BotService {
     private static final int MAX_PERIOD = 3;
 
     // Bot account
-    private static final UserDto BOT_USER;
+    private static final User BOT_USER;
+
     static {
         String avatarUri = "";
-        BOT_USER = UserDto.builder()
-                .setId(1)
-                .setName("Bot")
-                .setAvatarUri(avatarUri)
+        BOT_USER = User.builder()
+                .id(1L)
+                .name("Bot")
+                .avatarUri(avatarUri)
                 .build();
     }
 
@@ -46,6 +48,9 @@ public class OfflineBotService implements BotService {
     Scheduler mTimerScheduler;
 
     @Inject
+    MessageIdService mMessageIdService;
+
+    @Inject
     public OfflineBotService() {
         mPeriodRandom = new Random();
     }
@@ -56,7 +61,7 @@ public class OfflineBotService implements BotService {
     }
 
     @Override
-    public Flowable<MessageDto> messages() {
+    public Flowable<Message> messages() {
         return Flowable.create(e -> {
             if (e.isCancelled()) return;
 
@@ -67,10 +72,11 @@ public class OfflineBotService implements BotService {
                             mTimerScheduler))
                     .map(r -> getInterval())
                     .subscribe(newInterval -> {
-                        MessageDto message = MessageDto.builder()
-                                .setText(peekRandomQuote())
-                                .setTimeStamp(System.currentTimeMillis())
-                                .setAuthor(BOT_USER)
+                        Message message = Message.builder()
+                                .id(mMessageIdService.getLastMessageId() + 1)
+                                .text(peekRandomQuote())
+                                .timeStamp(System.currentTimeMillis())
+                                .author(BOT_USER)
                                 .build();
 
                         e.onNext(message);

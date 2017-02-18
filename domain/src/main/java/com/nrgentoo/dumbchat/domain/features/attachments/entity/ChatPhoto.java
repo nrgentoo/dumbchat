@@ -1,29 +1,24 @@
 package com.nrgentoo.dumbchat.domain.features.attachments.entity;
 
-import com.google.auto.value.AutoValue;
+import javax.annotation.Nullable;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Builder;
 
 /**
  * Photo entity
  */
 
-@AutoValue
-public abstract class ChatPhoto {
+@Builder
+@ToString(exclude = "id")
+@EqualsAndHashCode(exclude = "id")
+public class ChatPhoto {
 
-    public abstract long id();
+    @Nullable
+    @Getter @Setter private Long id;
 
-    public abstract String uri();
-
-    public static Builder builder() {
-        return new AutoValue_ChatPhoto.Builder();
-    }
-
-    @AutoValue.Builder
-    public abstract static class Builder {
-
-        public abstract Builder setId(long id);
-
-        public abstract Builder setUri(String uri);
-
-        public abstract ChatPhoto build();
-    }
+    @Getter String uri;
 }

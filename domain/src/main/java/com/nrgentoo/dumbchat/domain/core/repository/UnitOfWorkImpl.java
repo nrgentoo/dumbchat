@@ -43,6 +43,21 @@ public class UnitOfWorkImpl implements UnitOfWork {
     }
 
     @Override
+    public MessageRepo getMessageRepository() {
+        return mMessageRepo;
+    }
+
+    @Override
+    public UserRepo getUserRepository() {
+        return mUserRepo;
+    }
+
+    @Override
+    public AttachmentRepo getAttachmentRepository() {
+        return mAttachmentRepo;
+    }
+
+    @Override
     public <T> UnitOfWork insert(T entity) {
         mChangesStorage.attach(entity, INSERT);
         return this;

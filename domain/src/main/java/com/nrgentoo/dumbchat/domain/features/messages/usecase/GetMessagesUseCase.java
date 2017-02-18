@@ -4,7 +4,7 @@ import com.nrgentoo.dumbchat.domain.core.event.EventCallback;
 import com.nrgentoo.dumbchat.domain.core.event.EventsPort;
 import com.nrgentoo.dumbchat.domain.core.executor.PostExecutionThread;
 import com.nrgentoo.dumbchat.domain.core.executor.ThreadExecutor;
-import com.nrgentoo.dumbchat.domain.core.usecase.UseCase;
+import com.nrgentoo.dumbchat.domain.core.usecase.FlowableUseCase;
 import com.nrgentoo.dumbchat.domain.features.messages.entity.Message;
 import com.nrgentoo.dumbchat.domain.features.messages.event.NewMessageEvent;
 import com.nrgentoo.dumbchat.domain.features.messages.repository.MessageRepo;
@@ -18,10 +18,10 @@ import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 
 /**
- * {@link UseCase} to get messages
+ * {@link FlowableUseCase} to get messages
  */
 
-public class GetMessagesUseCase extends UseCase<List<Message>, Void> {
+public class GetMessagesUseCase extends FlowableUseCase<List<Message>, Void> {
 
     private MessageRepo mMessageRepo;
     private EventsPort mEventsPort;
@@ -43,7 +43,7 @@ public class GetMessagesUseCase extends UseCase<List<Message>, Void> {
     }
 
     @Override
-    protected Flowable<List<Message>> buildObservable(Void params) {
+    protected Flowable<List<Message>> buildFlowable(Void params) {
         return Flowable.create(e -> {
             if (e.isCancelled()) return;
 

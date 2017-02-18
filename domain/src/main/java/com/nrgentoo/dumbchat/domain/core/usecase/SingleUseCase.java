@@ -3,31 +3,28 @@ package com.nrgentoo.dumbchat.domain.core.usecase;
 import com.nrgentoo.dumbchat.domain.core.executor.PostExecutionThread;
 import com.nrgentoo.dumbchat.domain.core.executor.ThreadExecutor;
 
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
- * Abstract use case
- *
- * @param <R> result type
- * @param <P> parameter type. Can be {@link Void}
+ * Abstract use case which utilizes {@link Single}
  */
-public abstract class UseCase<R, P> {
+
+public abstract class SingleUseCase<R, P> {
 
     private Disposable mDisposable;
 
     private final ThreadExecutor mThreadExecutor;
     private final PostExecutionThread mPostExecutionThread;
 
-    public UseCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public SingleUseCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         this.mThreadExecutor = threadExecutor;
         this.mPostExecutionThread = postExecutionThread;
     }
 
-    protected abstract Flowable<R> buildObservable(P params);
+    protected abstract Single<R> buildSingle(P params);
 
     /**
      * Execute use case with observer
@@ -35,10 +32,10 @@ public abstract class UseCase<R, P> {
      * @param observer result observer
      * @param params parameters
      */
-    public void execute(DisposableSubscriber<R> observer, P params) {
+    public void execute(DisposableSingleObserver<R> observer, P params) {
         checkSubscription();
 
-        mDisposable = buildObservable(params)
+        mDisposable = buildSingle(params)
                 .subscribeOn(Schedulers.from(mThreadExecutor))
                 .observeOn(mPostExecutionThread.getScheduler())
                 .subscribeWith(observer);
@@ -48,10 +45,10 @@ public abstract class UseCase<R, P> {
      * Convenient method to chain use cases
      *
      * @param params parameters
-     * @return {@link Observable} of result
+     * @return {@link Single} of result
      */
-    public Flowable<R> execute(P params) {
-        return buildObservable(params);
+    public Single<R> execute(P params) {
+        return buildSingle(params);
     }
 
     /**
@@ -68,7 +65,7 @@ public abstract class UseCase<R, P> {
      */
     private void checkSubscription() {
         if (mDisposable != null && !mDisposable.isDisposed()) {
-            throw new IllegalStateException("UseCase " + getClass().getName() +
+            throw new IllegalStateException("FlowableUseCase " + getClass().getName() +
                     " is already executing");
         }
     }

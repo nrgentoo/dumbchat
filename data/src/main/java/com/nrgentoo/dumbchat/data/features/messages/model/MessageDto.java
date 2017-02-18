@@ -16,6 +16,8 @@ import java.util.List;
 @AutoValue
 public abstract class MessageDto {
 
+    public abstract long id();
+
     @Nullable
     public abstract String text();
 
@@ -32,6 +34,8 @@ public abstract class MessageDto {
 
     @AutoValue.Builder
     public abstract static class Builder {
+
+        public abstract Builder setId(long id);
 
         public abstract Builder setText(@Nullable String text);
 
