@@ -25,17 +25,23 @@ public interface Repository<T> {
     List<T> getAll();
 
     /**
-     * Add new entity
+     * Insert or update entity
      *
-     * @param entity entity to add
+     * @param entity entity to save
      */
-    void add(T entity);
+    void save(T entity) throws Throwable;
 
     /**
-     * Add a range of new entities
+     * Insert or update a range of entities
      *
-     * @param entities {@link Collection} of entities to insert
+     * @param entities {@link Collection} of entities to save
      */
-    void addRange(Collection<T> entities);
+    void save(Collection<T> entities) throws Throwable;
 
+    /**
+     * Delete entity
+     *
+     * @param entity entity to delete
+     */
+    void delete(T entity);
 }
