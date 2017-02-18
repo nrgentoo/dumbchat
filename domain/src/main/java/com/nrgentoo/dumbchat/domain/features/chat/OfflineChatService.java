@@ -5,6 +5,7 @@ import com.nrgentoo.dumbchat.domain.core.repository.UnitOfWork;
 import com.nrgentoo.dumbchat.domain.features.bot.BotService;
 import com.nrgentoo.dumbchat.domain.features.messages.entity.Message;
 import com.nrgentoo.dumbchat.domain.features.messages.event.NewMessageEvent;
+import com.nrgentoo.dumbchat.domain.features.notification.NotificationService;
 
 import javax.inject.Inject;
 
@@ -26,6 +27,12 @@ public class OfflineChatService implements ChatService {
     @SuppressWarnings("WeakerAccess")
     @Inject
     UnitOfWork mUnitOfWork;
+
+    @Inject
+    AppVisibilityService mAppVisibilityService;
+
+    @Inject
+    NotificationService mNotificationService;
 
     private Disposable mMessagesSubscription;
 
@@ -66,6 +73,10 @@ public class OfflineChatService implements ChatService {
                         .setMessageId(message.id())
                         .build();
                 mEventsPort.broadcast(NewMessageEvent.class, event);
+
+                if (mAppVisibilityService.isInBackground()) {
+                    mNotificationService.notifyNewMessage(message);
+                }
             } catch (Throwable throwable) {
 //                Log.e(TAG, "Error while inserting new message from Bot", throwable);
             }

@@ -6,6 +6,7 @@ import com.nrgentoo.dumbchat.domain.features.attachments.entity.Attachment;
 import com.nrgentoo.dumbchat.domain.features.bot.BotService;
 import com.nrgentoo.dumbchat.domain.features.messages.entity.Message;
 import com.nrgentoo.dumbchat.domain.features.messages.event.NewMessageEvent;
+import com.nrgentoo.dumbchat.domain.features.notification.NotificationService;
 import com.nrgentoo.dumbchat.domain.features.users.entity.User;
 
 import org.junit.After;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -52,6 +54,12 @@ public class OfflineChatServiceTest {
     @Mock
     User mockBotUser;
 
+    @Mock
+    NotificationService mockNotificationService;
+
+    @Mock
+    AppVisibilityService mockAppVisibilityService;
+
     private OfflineChatService mOfflineChatService;
 
     @Before
@@ -60,6 +68,8 @@ public class OfflineChatServiceTest {
         mOfflineChatService.mBotService = mockBotService;
         mOfflineChatService.mEventsPort = mockEventsPort;
         mOfflineChatService.mUnitOfWork = mockUnitOfWork;
+        mOfflineChatService.mNotificationService = mockNotificationService;
+        mOfflineChatService.mAppVisibilityService = mockAppVisibilityService;
 
         doReturn(getMessages())
                 .when(mockBotService).messages();
@@ -86,6 +96,27 @@ public class OfflineChatServiceTest {
 
         verify(mockEventsPort, times(MESSAGE_COUNT)).broadcast(eq(NewMessageEvent.class),
                 any(NewMessageEvent.class));
+    }
+
+    @Test
+    public void dontShowNotificationWhenAppIsForeground() throws Exception {
+        when(mockAppVisibilityService.isInBackground())
+                .thenReturn(false);
+
+        mOfflineChatService.connect();
+
+        verifyZeroInteractions(mockNotificationService);
+    }
+
+    @Test
+    public void showNotificationWhenAppIsInBackground() throws Exception {
+        when(mockAppVisibilityService.isInBackground())
+                .thenReturn(true);
+
+        mOfflineChatService.connect();
+
+        verify(mockNotificationService, times(MESSAGE_COUNT))
+                .notifyNewMessage(isA(Message.class));
     }
 
     private Flowable<Message> getMessages() {
