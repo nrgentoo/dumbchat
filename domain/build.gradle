@@ -13,6 +13,9 @@ dependencies {
     compileOnly deps.autovalueAnnotations
     apt deps.autovalue
 
+    compileOnly deps.lombok
+    apt deps.lombok
+
     compile deps.rxJava
 
     compileOnly deps.javaxAnnotations305

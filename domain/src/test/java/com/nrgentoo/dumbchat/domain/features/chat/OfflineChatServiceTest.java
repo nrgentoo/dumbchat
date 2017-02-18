@@ -132,7 +132,7 @@ public class OfflineChatServiceTest {
     private Message makeMessage() {
         Message message = mock(Message.class);
 
-        when(message.author())
+        when(message.getAuthor())
                 .thenReturn(mockBotUser);
 
         List<Attachment<?>> attachments = new ArrayList<>();
@@ -140,7 +140,7 @@ public class OfflineChatServiceTest {
             attachments.add(mock(Attachment.class));
         }
 
-        when(message.attachments())
+        when(message.getAttachments())
                 .thenReturn(attachments);
 
         return message;

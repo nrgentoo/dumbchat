@@ -61,16 +61,17 @@ public class OfflineChatService implements ChatService {
         @Override
         public void onNext(Message message) {
             // insert new message and all relations
-            mUnitOfWork.insert(message.author());
-            mUnitOfWork.insert(message.attachments());
+            mUnitOfWork.insert(message.getAuthor());
+            mUnitOfWork.insert(message.getAttachments());
             mUnitOfWork.insert(message);
             try {
                 // commit transaction
                 mUnitOfWork.commit();
 
                 // post event
+                //noinspection ConstantConditions
                 NewMessageEvent event = NewMessageEvent.builder()
-                        .setMessageId(message.id())
+                        .setMessageId(message.getId())
                         .build();
                 mEventsPort.broadcast(NewMessageEvent.class, event);
 

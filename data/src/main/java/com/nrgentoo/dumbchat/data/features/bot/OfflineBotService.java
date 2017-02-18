@@ -33,9 +33,9 @@ public class OfflineBotService implements BotService {
     static {
         String avatarUri = "";
         BOT_USER = User.builder()
-                .setId(1)
-                .setName("Bot")
-                .setAvatarUri(avatarUri)
+                .id(1L)
+                .name("Bot")
+                .avatarUri(avatarUri)
                 .build();
     }
 
@@ -73,10 +73,10 @@ public class OfflineBotService implements BotService {
                     .map(r -> getInterval())
                     .subscribe(newInterval -> {
                         Message message = Message.builder()
-                                .setId(mMessageIdService.getLastMessageId() + 1)
-                                .setText(peekRandomQuote())
-                                .setTimeStamp(System.currentTimeMillis())
-                                .setAuthor(BOT_USER)
+                                .id(mMessageIdService.getLastMessageId() + 1)
+                                .text(peekRandomQuote())
+                                .timeStamp(System.currentTimeMillis())
+                                .author(BOT_USER)
                                 .build();
 
                         e.onNext(message);
