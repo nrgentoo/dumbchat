@@ -1,10 +1,10 @@
 package com.nrgentoo.dumbchat.domain.core.executor;
 
-import com.nrgentoo.dumbchat.domain.core.usecase.UseCase;
+import com.nrgentoo.dumbchat.domain.core.usecase.SingleUseCase;
 import io.reactivex.Scheduler;
 
 /**
- * Thread where {@link UseCase} result should be delivered
+ * Thread where {@link SingleUseCase} result should be delivered
  */
 
 public interface PostExecutionThread {
