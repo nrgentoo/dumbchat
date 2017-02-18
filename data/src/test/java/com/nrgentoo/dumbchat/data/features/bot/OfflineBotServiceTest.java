@@ -1,8 +1,8 @@
 package com.nrgentoo.dumbchat.data.features.bot;
 
-import com.nrgentoo.dumbchat.data.features.messages.model.MessageDto;
 import com.nrgentoo.dumbchat.domain.features.messages.entity.Message;
 
+import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.reactivex.schedulers.TestScheduler;
 import io.reactivex.subscribers.TestSubscriber;
@@ -36,6 +37,7 @@ public class OfflineBotServiceTest {
 
         mOfflineBotService = new OfflineBotService();
         mOfflineBotService.mTimerScheduler = mTimerScheduler;
+        mOfflineBotService.mMessageIdService = new MockMessageIdService();
         mOfflineBotService.setPeriods(MIN_PERIOD, MAX_PERIOD);
     }
 
@@ -46,7 +48,7 @@ public class OfflineBotServiceTest {
 
     @Test
     public void botMessages() throws Exception {
-        TestSubscriber<MessageDto> subscriber = new TestSubscriber<>();
+        TestSubscriber<Message> subscriber = new TestSubscriber<>();
 
         mOfflineBotService.messages()
                 .subscribe(subscriber);
@@ -60,8 +62,18 @@ public class OfflineBotServiceTest {
         int minValues = MOCK_TEST_TIME / MAX_PERIOD;
         int maxValues = MOCK_TEST_TIME / MIN_PERIOD;
 
-        assertThat(subscriber.values()).isNotEmpty();
+        Assertions.assertThat(subscriber.values()).isNotEmpty();
         assertThat(subscriber.valueCount()).isBetween(minValues, maxValues);
+    }
+
+    private static class MockMessageIdService implements MessageIdService {
+
+        private AtomicInteger mLastId = new AtomicInteger(0);
+
+        @Override
+        public long getLastMessageId() {
+            return mLastId.getAndIncrement();
+        }
     }
 
 }
