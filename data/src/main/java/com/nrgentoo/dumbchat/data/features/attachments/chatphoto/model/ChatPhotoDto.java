@@ -1,4 +1,4 @@
-package com.nrgentoo.dumbchat.data.features.attachments.model;
+package com.nrgentoo.dumbchat.data.features.attachments.chatphoto.model;
 
 import com.google.auto.value.AutoValue;
 

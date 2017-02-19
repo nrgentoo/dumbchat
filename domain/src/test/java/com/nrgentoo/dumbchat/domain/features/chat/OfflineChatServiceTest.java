@@ -22,7 +22,6 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doReturn;
@@ -86,11 +85,6 @@ public class OfflineChatServiceTest {
 
         verify(mockUnitOfWork, times(MESSAGE_COUNT))
                 .insert(isA(Message.class));
-        verify(mockUnitOfWork, times(MESSAGE_COUNT))
-                .insert(mockBotUser);
-
-        verify(mockUnitOfWork, times(MESSAGE_COUNT))
-                .insert(anyListOf(Attachment.class));
 
         verify(mockUnitOfWork, times(MESSAGE_COUNT)).commit();
 

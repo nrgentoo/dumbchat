@@ -1,10 +1,10 @@
 package com.nrgentoo.dumbchat.domain.core.repository;
 
 /**
- * Interface for database context
+ * Interface for persistence context
  */
 
-public interface DbContext {
+public interface PersistenceContext {
 
     void startTransaction();
 

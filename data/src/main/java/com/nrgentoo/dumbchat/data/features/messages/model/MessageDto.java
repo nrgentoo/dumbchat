@@ -3,7 +3,7 @@ package com.nrgentoo.dumbchat.data.features.messages.model;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
-import com.nrgentoo.dumbchat.data.features.attachments.model.AttachmentDto;
+import com.nrgentoo.dumbchat.data.features.attachments.attachment.model.AttachmentDto;
 import com.nrgentoo.dumbchat.data.features.users.model.UserDto;
 
 import java.util.Collections;

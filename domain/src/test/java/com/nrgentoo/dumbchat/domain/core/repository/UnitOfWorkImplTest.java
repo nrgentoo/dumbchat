@@ -39,7 +39,7 @@ public class UnitOfWorkImplTest {
     AttachmentRepo mockAttachmentRepo;
 
     @Mock
-    DbContext mockDbContext;
+    PersistenceContext mockPersistenceContext;
 
     private UnitOfWorkImpl mUnitOfWork;
 
@@ -47,7 +47,7 @@ public class UnitOfWorkImplTest {
     public void setUp() throws Exception {
         mUnitOfWork = new UnitOfWorkImpl();
 
-        mUnitOfWork.mDbContext = mockDbContext;
+        mUnitOfWork.mPersistenceContext = mockPersistenceContext;
         mUnitOfWork.mMessageRepo = mockMessageRepo;
         mUnitOfWork.mUserRepo = mockUserRepo;
         mUnitOfWork.mAttachmentRepo = mockAttachmentRepo;
@@ -70,12 +70,12 @@ public class UnitOfWorkImplTest {
         mUnitOfWork.insert(attachment);
         mUnitOfWork.commit();
 
-        verify(mockDbContext).startTransaction();
+        verify(mockPersistenceContext).startTransaction();
         verify(mockMessageRepo).save(message);
         verify(mockUserRepo).save(user);
         verify(mockAttachmentRepo).save(attachment);
-        verify(mockDbContext).markTransactionSuccessful();
-        verify(mockDbContext).endTransaction();
+        verify(mockPersistenceContext).markTransactionSuccessful();
+        verify(mockPersistenceContext).endTransaction();
     }
 
     @Test
@@ -88,9 +88,9 @@ public class UnitOfWorkImplTest {
         mUnitOfWork.insert(messages);
         mUnitOfWork.commit();
 
-        verify(mockDbContext).startTransaction();
+        verify(mockPersistenceContext).startTransaction();
         verify(mockMessageRepo).save(messages);
-        verify(mockDbContext).endTransaction();
+        verify(mockPersistenceContext).endTransaction();
     }
 
     @Test
@@ -104,12 +104,12 @@ public class UnitOfWorkImplTest {
         mUnitOfWork.update(attachment);
         mUnitOfWork.commit();
 
-        verify(mockDbContext).startTransaction();
+        verify(mockPersistenceContext).startTransaction();
         verify(mockMessageRepo).save(message);
         verify(mockUserRepo).save(user);
         verify(mockAttachmentRepo).save(attachment);
-        verify(mockDbContext).markTransactionSuccessful();
-        verify(mockDbContext).endTransaction();
+        verify(mockPersistenceContext).markTransactionSuccessful();
+        verify(mockPersistenceContext).endTransaction();
     }
 
     @Test
@@ -123,12 +123,12 @@ public class UnitOfWorkImplTest {
         mUnitOfWork.delete(attachment);
         mUnitOfWork.commit();
 
-        verify(mockDbContext).startTransaction();
+        verify(mockPersistenceContext).startTransaction();
         verify(mockMessageRepo).delete(message);
         verify(mockUserRepo).delete(user);
         verify(mockAttachmentRepo).delete(attachment);
-        verify(mockDbContext).markTransactionSuccessful();
-        verify(mockDbContext).endTransaction();
+        verify(mockPersistenceContext).markTransactionSuccessful();
+        verify(mockPersistenceContext).endTransaction();
     }
 
     @Test(expected = Exception.class)
@@ -141,9 +141,9 @@ public class UnitOfWorkImplTest {
         mUnitOfWork.insert(message);
         mUnitOfWork.commit();
 
-        verify(mockDbContext).startTransaction();
+        verify(mockPersistenceContext).startTransaction();
         verify(mockMessageRepo).save(message);
-        verify(mockDbContext, times(0)).markTransactionSuccessful();
-        verify(mockDbContext).endTransaction();
+        verify(mockPersistenceContext, times(0)).markTransactionSuccessful();
+        verify(mockPersistenceContext).endTransaction();
     }
 }

@@ -55,6 +55,7 @@ dependencies {
     testCompile testDeps.junit
     testCompile testDeps.mockito
     testCompile testDeps.assertj
+    testCompile testDeps.robolectric
 
     testApt deps.daggerCompiler
     testCompile deps.dagger

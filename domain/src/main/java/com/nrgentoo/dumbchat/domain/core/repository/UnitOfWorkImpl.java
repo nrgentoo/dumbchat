@@ -36,7 +36,7 @@ public class UnitOfWorkImpl implements UnitOfWork {
     ChangesStorage mChangesStorage;
 
     @Inject
-    DbContext mDbContext;
+    PersistenceContext mPersistenceContext;
 
     @Inject
     public UnitOfWorkImpl() {
@@ -89,7 +89,7 @@ public class UnitOfWorkImpl implements UnitOfWork {
     public void commit() throws Throwable {
         try {
             // start transaction
-            mDbContext.startTransaction();
+            mPersistenceContext.startTransaction();
 
             for (EntityState entityState : mChangesStorage) {
                 switch (entityState.state()) {
@@ -113,10 +113,10 @@ public class UnitOfWorkImpl implements UnitOfWork {
             }
 
             // mark successful
-            mDbContext.markTransactionSuccessful();
+            mPersistenceContext.markTransactionSuccessful();
         } finally {
             // end transaction
-            mDbContext.endTransaction();
+            mPersistenceContext.endTransaction();
         }
     }
 

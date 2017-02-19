@@ -14,20 +14,4 @@ public class PhotoAttachment extends Attachment<ChatPhoto> {
     public String type() {
         return TYPE_PHOTO;
     }
-
-    @Override
-    public String toString() {
-        return get().toString();
-    }
-
-    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
-    @Override
-    public boolean equals(Object o) {
-        return get().equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return get().hashCode();
-    }
 }

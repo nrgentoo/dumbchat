@@ -15,7 +15,7 @@ import lombok.experimental.Builder;
 @Builder
 @ToString(exclude = "id")
 @EqualsAndHashCode(exclude = "id")
-public class ChatPhoto {
+public class ChatPhoto implements AttachmentEntity {
 
     @Nullable
     @Getter @Setter private Long id;
