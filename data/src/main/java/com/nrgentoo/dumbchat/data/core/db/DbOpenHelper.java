@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.nrgentoo.dumbchat.data.features.attachments.attachment.repository.AttachmentTable;
 import com.nrgentoo.dumbchat.data.features.attachments.chatphoto.repository.ChatPhotoTable;
 import com.nrgentoo.dumbchat.data.features.messages.repository.MessageTable;
+import com.nrgentoo.dumbchat.data.features.users.repository.ChatUsers;
 import com.nrgentoo.dumbchat.data.features.users.repository.UserTable;
 
 /**
@@ -31,6 +32,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             db.execSQL(ChatPhotoTable.CREATE);
             db.execSQL(AttachmentTable.CREATE);
             db.execSQL(MessageTable.CREATE);
+            ChatUsers.insetUsers(db);
 
             // mark transaction completed
             db.setTransactionSuccessful();
