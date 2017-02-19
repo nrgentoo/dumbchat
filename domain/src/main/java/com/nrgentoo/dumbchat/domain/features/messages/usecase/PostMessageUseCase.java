@@ -43,7 +43,6 @@ public class PostMessageUseCase extends SingleUseCase<Message, PostMessageUseCas
             Message message = createMessage(params);
 
             mUnitOfWork.insert(message);
-            mUnitOfWork.insert(message.getAttachments());
             try {
                 mUnitOfWork.commit();
                 e.onSuccess(message);

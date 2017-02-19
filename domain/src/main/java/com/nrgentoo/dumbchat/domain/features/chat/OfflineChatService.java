@@ -61,8 +61,6 @@ public class OfflineChatService implements ChatService {
         @Override
         public void onNext(Message message) {
             // insert new message and all relations
-            mUnitOfWork.insert(message.getAuthor());
-            mUnitOfWork.insert(message.getAttachments());
             mUnitOfWork.insert(message);
             try {
                 // commit transaction
