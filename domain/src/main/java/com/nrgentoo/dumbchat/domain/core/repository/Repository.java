@@ -43,5 +43,5 @@ public interface Repository<T> {
      *
      * @param entity entity to delete
      */
-    void delete(T entity);
+    void delete(T entity) throws Throwable;
 }

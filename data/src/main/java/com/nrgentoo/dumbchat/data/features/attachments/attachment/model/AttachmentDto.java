@@ -1,4 +1,4 @@
-package com.nrgentoo.dumbchat.data.features.attachments.model;
+package com.nrgentoo.dumbchat.data.features.attachments.attachment.model;
 
 /**
  * Attachment data transfer object

@@ -32,6 +32,7 @@ ext {
     final jUnitVersion = '4.12'
     final assertJVersion = '1.7.1'
     final mockitoVersion = '1.9.5'
+    final robolectricVersion = '3.2.2'
 
     domainDependencies = [
             autovalue:              "com.google.auto.value:auto-value:$autovalueVersion",
@@ -68,5 +69,6 @@ ext {
             junit:              "junit:junit:${jUnitVersion}",
             mockito:            "org.mockito:mockito-core:${mockitoVersion}",
             assertj:            "org.assertj:assertj-core:${assertJVersion}",
+            robolectric:        "org.robolectric:robolectric:${robolectricVersion}"
     ]
 }

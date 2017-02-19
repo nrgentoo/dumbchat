@@ -1,4 +1,6 @@
-package com.nrgentoo.dumbchat.data.features.attachments.model;
+package com.nrgentoo.dumbchat.data.features.attachments.attachment.model;
+
+import com.nrgentoo.dumbchat.data.features.attachments.chatphoto.model.ChatPhotoDto;
 
 /**
  * Subclass of {@link AttachmentDto} for photo attachments

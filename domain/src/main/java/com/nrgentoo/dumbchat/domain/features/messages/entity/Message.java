@@ -1,6 +1,7 @@
 package com.nrgentoo.dumbchat.domain.features.messages.entity;
 
 import com.nrgentoo.dumbchat.domain.features.attachments.entity.Attachment;
+import com.nrgentoo.dumbchat.domain.features.attachments.entity.AttachmentEntity;
 import com.nrgentoo.dumbchat.domain.features.users.entity.User;
 
 import java.util.List;
@@ -31,5 +32,5 @@ public class Message {
 
     @Getter private long timeStamp;
 
-    @Getter private List<Attachment<?>> attachments;
+    @Getter private List<Attachment<? extends AttachmentEntity>> attachments;
 }
