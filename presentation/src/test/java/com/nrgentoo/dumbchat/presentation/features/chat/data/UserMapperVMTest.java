@@ -9,8 +9,9 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Created by Nrg on 22.02.2017.
+ * Test {@link UserMapperVM}
  */
+
 public class UserMapperVMTest {
 
     private static final Long USER_ID = 1L;
