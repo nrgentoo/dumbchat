@@ -28,13 +28,42 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    def deps = rootProject.ext.presentationDependencies
+    def testDeps = rootProject.ext.presentationTestDependencies
+
+    compile project(':domain')
+    compile project(':data')
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    testCompile 'junit:junit:4.12'
+
+    compile deps.appcompat_v7
+
+    apt  deps.daggerCompiler
+    compile deps.dagger
+    provided deps.javaxAnnotation
+
+    provided deps.autovalueAnnotations
+    apt deps.autovalue
+
+    compile deps.rxAndroid
+
+    testCompile testDeps.junit
+    testCompile testDeps.mockito
+    testCompile testDeps.assertj
+    testCompile testDeps.powermock_mockito
+    testCompile testDeps.powermock_junit
+    testCompile testDeps.powermock
+
+    testApt deps.daggerCompiler
+    testCompile deps.dagger
 }

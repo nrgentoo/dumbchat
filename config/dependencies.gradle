@@ -33,6 +33,7 @@ ext {
     final assertJVersion = '1.7.1'
     final mockitoVersion = '1.9.5'
     final robolectricVersion = '3.2.2'
+    final powermockVersion = '1.6.6'
 
     domainDependencies = [
             autovalue:              "com.google.auto.value:auto-value:$autovalueVersion",
@@ -54,7 +55,7 @@ ext {
     ]
 
     dataDependencies = [
-            appcompat_v7:        "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            appcompat_v7:           "com.android.support:appcompat-v7:${supportLibraryVersion}",
             autovalue:              "com.google.auto.value:auto-value:$autovalueVersion",
             autovalueAnnotations:   "com.jakewharton.auto.value:auto-value-annotations:" +
                     "$autovalueAnnotationsVersion",
@@ -70,5 +71,25 @@ ext {
             mockito:            "org.mockito:mockito-core:${mockitoVersion}",
             assertj:            "org.assertj:assertj-core:${assertJVersion}",
             robolectric:        "org.robolectric:robolectric:${robolectricVersion}"
+    ]
+
+    presentationDependencies = [
+            appcompat_v7:           "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            daggerCompiler:         "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger:                 "com.google.dagger:dagger:${daggerVersion}",
+            javaxAnnotation:        "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            autovalue:              "com.google.auto.value:auto-value:$autovalueVersion",
+            autovalueAnnotations:   "com.jakewharton.auto.value:auto-value-annotations:" +
+                    "$autovalueAnnotationsVersion",
+            rxAndroid:              "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}"
+    ]
+
+    presentationTestDependencies = [
+            junit:              "junit:junit:${jUnitVersion}",
+            mockito:            "org.mockito:mockito-core:${mockitoVersion}",
+            assertj:            "org.assertj:assertj-core:${assertJVersion}",
+            powermock_mockito:  "org.powermock:powermock-api-mockito:${powermockVersion}",
+            powermock_junit:    "org.powermock:powermock-module-junit4:${powermockVersion}",
+            powermock:          "org.powermock:powermock:${powermockVersion}"
     ]
 }
