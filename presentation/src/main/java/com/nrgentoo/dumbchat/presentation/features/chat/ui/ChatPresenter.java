@@ -130,6 +130,23 @@ class ChatPresenter extends BasePresenter<ChatView> {
         getMvpView().notifyPhotoRemoved(position);
     }
 
+    public void postMessage() {
+        if (validate()) {
+            String text = getMvpView().getTypedText();
+
+            if (mPhotoUris.isEmpty()) {
+                postMessage(text);
+            } else {
+                postMessage(text, mPhotoUris);
+            }
+        }
+    }
+
+    private boolean validate() {
+        String text = getMvpView().getTypedText();
+        return !(text.isEmpty() && mPhotoUris.isEmpty());
+    }
+
     void postMessage(String message) {
         postMessage(message, null);
     }

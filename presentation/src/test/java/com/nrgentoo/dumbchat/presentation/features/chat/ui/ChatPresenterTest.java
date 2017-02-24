@@ -37,10 +37,13 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -195,7 +198,7 @@ public class ChatPresenterTest {
     }
 
     @Test
-    public void postMessage_noAttachments() throws Exception {
+    public void _postMessage_noAttachments() throws Exception {
         mockPostMessageExecutor();
 
         PostMessageUseCase.Params expectedParams = PostMessageUseCase.Params.builder()
@@ -212,7 +215,7 @@ public class ChatPresenterTest {
     }
 
     @Test
-    public void postMessage_withPhotos() throws Exception {
+    public void _postMessage_withPhotos() throws Exception {
         mockPostMessageExecutor();
 
         String photoPath = "path to photo file";
@@ -259,5 +262,47 @@ public class ChatPresenterTest {
         mChatPresenter.removePhoto(0);
         assertThat(mChatPresenter.mPhotoUris).doesNotContain(photoUri);
         verify(mockChatView).notifyPhotoRemoved(0);
+    }
+
+    @Test
+    public void postMessage() throws Exception {
+        mChatPresenter = spy(mChatPresenter);
+
+        mChatPresenter.attachView(mockChatView);
+        assertThat(mChatPresenter.mPhotoUris).isEmpty();
+        when(mockChatView.getTypedText()).thenReturn(MESSAGE_TEXT);
+
+        mChatPresenter.postMessage();
+
+        verify(mChatPresenter).postMessage(MESSAGE_TEXT);
+    }
+
+    @Test
+    public void postMessage_withPhotos() throws Exception {
+        mChatPresenter = spy(mChatPresenter);
+
+        mChatPresenter.attachView(mockChatView);
+        String photoUri = "photo uri";
+        mChatPresenter.mPhotoUris.add(photoUri);
+        when(mockChatView.getTypedText()).thenReturn(MESSAGE_TEXT);
+
+        mChatPresenter.postMessage();
+
+        List<String> photoUris = Collections.singletonList(photoUri);
+        verify(mChatPresenter).postMessage(eq(MESSAGE_TEXT), eq(photoUris));
+    }
+
+    @Test
+    public void dontPostEmptyMessage() throws Exception {
+        mChatPresenter = spy(mChatPresenter);
+        mChatPresenter.attachView(mockChatView);
+
+        assertThat(mChatPresenter.mPhotoUris).isEmpty();
+        when(mockChatView.getTypedText()).thenReturn("");
+
+        mChatPresenter.postMessage();
+
+        verify(mChatPresenter, times(0)).postMessage(any());
+        verify(mChatPresenter, times(0)).postMessage(any(), any());
     }
 }

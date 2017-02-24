@@ -13,4 +13,6 @@ public interface ChatView extends MvpView {
     void notifyPhotoAppended(int insertPosition);
 
     void notifyPhotoRemoved(int photoIndex);
+
+    String getTypedText();
 }

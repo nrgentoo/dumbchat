@@ -48,4 +48,9 @@ public class ChatActivity extends BaseActivity implements ChatView {
     public void notifyPhotoRemoved(int photoIndex) {
 
     }
+
+    @Override
+    public String getTypedText() {
+        return null;
+    }
 }
