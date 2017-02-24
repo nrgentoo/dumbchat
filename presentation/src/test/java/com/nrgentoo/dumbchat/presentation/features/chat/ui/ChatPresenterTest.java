@@ -27,11 +27,12 @@ import javax.inject.Provider;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doAnswer;
@@ -48,6 +49,9 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @PrepareForTest(MessageMapperVM.class)
 public class ChatPresenterTest {
 
+    private static final String MESSAGE_TEXT = "message text";
+    private static final long MY_USER_ID = 1;
+
     @Mock
     GetMessagesUseCase mockGetMessagesUseCase;
 
@@ -59,6 +63,9 @@ public class ChatPresenterTest {
 
     @Mock
     PostMessageUseCase mockPostMessageUseCase;
+
+    @Mock
+    UseCaseExecutor mockPostMessageExecutor;
 
     @Mock
     GetMyselfUseCase mockGetMyselfUseCase;
@@ -88,6 +95,25 @@ public class ChatPresenterTest {
         when(mockGetMyselfUseCase.execute(null))
                 .thenReturn(Single.just(mockMyselfUser));
 
+        when(mockMyselfUser.getId())
+                .thenReturn(MY_USER_ID);
+
+        mChatPresenter.mGetMessagesUseCase = mockGetMessagesUseCase;
+        mChatPresenter.mGetMessagesExecutor = mockUseCaseExecutor;
+        mChatPresenter.mPostMessageUseCaseProvider = mockPostMessageUseCaseProvider;
+        mChatPresenter.mPostMessageExecutor = mockPostMessageExecutor;
+        mChatPresenter.setGetMyselfUseCase(mockGetMyselfUseCase);
+
+        mockStatic(MessageMapperVM.class);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        mChatPresenter = null;
+    }
+
+    @Test
+    public void getAttachView() throws Exception {
         //noinspection unchecked
         doAnswer(invocation -> {
             //noinspection unchecked
@@ -102,21 +128,6 @@ public class ChatPresenterTest {
             return null;
         }).when(mockUseCaseExecutor).execute(isA(Flowable.class), isA(DisposableSubscriber.class));
 
-        mChatPresenter.mGetMessagesUseCase = mockGetMessagesUseCase;
-        mChatPresenter.mGetMessagesExecutor = mockUseCaseExecutor;
-        mChatPresenter.mPostMessageUseCaseProvider = mockPostMessageUseCaseProvider;
-        mChatPresenter.setGetMyselfUseCase(mockGetMyselfUseCase);
-
-        mockStatic(MessageMapperVM.class);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        mChatPresenter = null;
-    }
-
-    @Test
-    public void getMessages() throws Exception {
         mChatPresenter.attachView(mockChatView);
 
         List<Message> firstMessages = getMockMessages(5);
@@ -163,8 +174,37 @@ public class ChatPresenterTest {
     }
 
     @Test
-    public void postMessage() throws Exception {
-        fail("Not implemented yet");
+    public void postMessage_noAttachments() throws Exception {
+        //noinspection unchecked
+        doAnswer(invocation -> {
+            //noinspection unchecked
+            Single<Message> messageSingle =
+                    (Single<Message>) invocation.getArguments()[0];
+
+            //noinspection unchecked
+            DisposableSingleObserver<Message> subscriber =
+                    (DisposableSingleObserver<Message>) invocation.getArguments()[1];
+
+            messageSingle.subscribeWith(subscriber);
+            return null;
+        }).when(mockPostMessageExecutor).execute(isA(Single.class),
+                isA(DisposableSingleObserver.class));
+
+        PostMessageUseCase.Params expectedParams = PostMessageUseCase.Params.builder()
+                .setAuthorId(MY_USER_ID)
+                .setMessageText(MESSAGE_TEXT)
+                .build();
+
+        Single<Message> messageSingle = Single.just(mock(Message.class));
+        when(mockPostMessageUseCase.execute(any()))
+                .thenReturn(messageSingle);
+
+        mChatPresenter.postMessage(MESSAGE_TEXT);
+
+        verify(mockPostMessageUseCase).execute(eq(expectedParams));
+        //noinspection unchecked
+        verify(mockPostMessageExecutor).execute(isA(Single.class),
+                isA(DisposableSingleObserver.class));
     }
 
 }

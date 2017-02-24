@@ -11,6 +11,7 @@ import com.nrgentoo.dumbchat.domain.features.messages.entity.Message;
 import com.nrgentoo.dumbchat.domain.features.messages.event.NewMessageEvent;
 import com.nrgentoo.dumbchat.domain.features.users.entity.User;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -81,7 +82,8 @@ public class PostMessageUseCase extends SingleUseCase<Message, PostMessageUseCas
         public abstract List<Attachment<?>> attachments();
 
         public static Builder builder() {
-            return new AutoValue_PostMessageUseCase_Params.Builder();
+            return new AutoValue_PostMessageUseCase_Params.Builder()
+                    .setAttachments(Collections.emptyList());
         }
 
         @AutoValue.Builder

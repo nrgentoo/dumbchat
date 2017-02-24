@@ -46,6 +46,9 @@ class ChatPresenter extends BasePresenter<ChatView> {
     @Inject
     Provider<PostMessageUseCase> mPostMessageUseCaseProvider;
 
+    @Inject
+    UseCaseExecutor mPostMessageExecutor;
+
     private Single<User> mMyselfSingle;
 
     List<MessageVM> mMessages;
@@ -111,16 +114,19 @@ class ChatPresenter extends BasePresenter<ChatView> {
     }
 
     public void postMessage(String message) {
-//        PostMessageUseCase useCase = mPostMessageUseCaseProvider.get();
-//        PostMessageUseCase.Params params = PostMessageUseCase.Params.builder()
-//                .setMessageText(message)
-//                .setAuthorId()
-//                .build();
-//
-//        useCase.execute(new PostMessageSubscriber(), );
+        PostMessageUseCase useCase = mPostMessageUseCaseProvider.get();
+
+        Single<Message> postMessageSingle = mMyselfSingle
+                .map(user -> PostMessageUseCase.Params.builder()
+                .setMessageText(message)
+                .setAuthorId(user.getId())
+                .build())
+                .flatMap(useCase::execute);
+
+        mPostMessageExecutor.execute(postMessageSingle, new PostMessageObserver());
     }
 
-    private class PostMessageSubscriber extends DisposableSingleObserver<Message> {
+    private class PostMessageObserver extends DisposableSingleObserver<Message> {
 
         @Override
         public void onSuccess(Message message) {
