@@ -1,8 +1,13 @@
 package com.nrgentoo.dumbchat.presentation.features.chat.ui;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.nrgentoo.dumbchat.domain.core.usecase.UseCaseExecutor;
+import com.nrgentoo.dumbchat.domain.features.attachments.entity.Attachment;
+import com.nrgentoo.dumbchat.domain.features.attachments.entity.ChatPhoto;
+import com.nrgentoo.dumbchat.domain.features.attachments.entity.PhotoAttachment;
 import com.nrgentoo.dumbchat.domain.features.messages.entity.Message;
 import com.nrgentoo.dumbchat.domain.features.messages.usecase.GetMessagesUseCase;
 import com.nrgentoo.dumbchat.domain.features.messages.usecase.PostMessageUseCase;
@@ -114,16 +119,35 @@ class ChatPresenter extends BasePresenter<ChatView> {
     }
 
     public void postMessage(String message) {
+        postMessage(message, null);
+    }
+
+    public void postMessage(String message, @Nullable List<String> photoUris) {
         PostMessageUseCase useCase = mPostMessageUseCaseProvider.get();
 
         Single<Message> postMessageSingle = mMyselfSingle
                 .map(user -> PostMessageUseCase.Params.builder()
-                .setMessageText(message)
-                .setAuthorId(user.getId())
-                .build())
+                        .setMessageText(message)
+                        .setAttachments(makeAttachments(photoUris))
+                        .setAuthorId(user.getId())
+                        .build())
                 .flatMap(useCase::execute);
 
         mPostMessageExecutor.execute(postMessageSingle, new PostMessageObserver());
+    }
+
+    @NonNull
+    private List<Attachment<?>> makeAttachments(List<String> photoUris) {
+        List<Attachment<?>> attachments = new LinkedList<>();
+        if (photoUris != null && !photoUris.isEmpty()) {
+            for (String photoUri : photoUris) {
+                ChatPhoto chatPhoto = ChatPhoto.builder().uri(photoUri).build();
+                PhotoAttachment photoAttachment = new PhotoAttachment(chatPhoto);
+                attachments.add(photoAttachment);
+            }
+        }
+
+        return attachments;
     }
 
     private class PostMessageObserver extends DisposableSingleObserver<Message> {

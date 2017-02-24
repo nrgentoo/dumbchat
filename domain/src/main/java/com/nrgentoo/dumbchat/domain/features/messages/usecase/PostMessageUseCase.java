@@ -14,6 +14,7 @@ import com.nrgentoo.dumbchat.domain.features.users.entity.User;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import io.reactivex.Single;
@@ -77,6 +78,7 @@ public class PostMessageUseCase extends SingleUseCase<Message, PostMessageUseCas
 
         public abstract long authorId();
 
+        @Nullable
         public abstract String messageText();
 
         public abstract List<Attachment<?>> attachments();
@@ -91,7 +93,7 @@ public class PostMessageUseCase extends SingleUseCase<Message, PostMessageUseCas
 
             public abstract Builder setAuthorId(long authorId);
 
-            public abstract Builder setMessageText(String messageText);
+            public abstract Builder setMessageText(@Nullable String messageText);
 
             public abstract Builder setAttachments(List<Attachment<?>> attachments);
 
