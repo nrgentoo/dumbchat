@@ -35,7 +35,17 @@ public class ChatActivity extends BaseActivity implements ChatView {
     // --------------------------------------------------------------------------------------------
 
     @Override
-    public void notifyMassagesInserted(int insertPosition, int count) {
+    public void notifyMessagesInserted(int insertPosition, int count) {
+
+    }
+
+    @Override
+    public void notifyPhotoAppended(int insertPosition) {
+
+    }
+
+    @Override
+    public void notifyPhotoRemoved(int photoIndex) {
 
     }
 }

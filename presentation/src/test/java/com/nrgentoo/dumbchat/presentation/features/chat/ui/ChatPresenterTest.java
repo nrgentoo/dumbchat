@@ -149,8 +149,8 @@ public class ChatPresenterTest {
         mMessagesSubject.onNext(firstMessages);
         mMessagesSubject.onNext(secondMessages);
 
-        verify(mockChatView).notifyMassagesInserted(0, 5);
-        verify(mockChatView).notifyMassagesInserted(5, 3);
+        verify(mockChatView).notifyMessagesInserted(0, 5);
+        verify(mockChatView).notifyMessagesInserted(5, 3);
 
         List<MessageVM> expectedMessages = new LinkedList<>(firstMessagesVM);
         expectedMessages.addAll(secondMessageVM);
@@ -235,5 +235,29 @@ public class ChatPresenterTest {
         //noinspection unchecked
         verify(mockPostMessageExecutor).execute(isA(Single.class),
                 isA(DisposableSingleObserver.class));
+    }
+
+    @Test
+    public void appendPhoto() throws Exception {
+        mChatPresenter.attachView(mockChatView);
+        assertThat(mChatPresenter.mPhotoUris).isEmpty();
+
+        String photoUri = "photo uri";
+        mChatPresenter.appendPhoto(photoUri);
+
+        assertThat(mChatPresenter.mPhotoUris).hasSize(1);
+        assertThat(mChatPresenter.mPhotoUris).contains(photoUri);
+        verify(mockChatView).notifyPhotoAppended(0);
+    }
+
+    @Test
+    public void removePhoto() throws Exception {
+        mChatPresenter.attachView(mockChatView);
+        String photoUri = "photo uri";
+        mChatPresenter.mPhotoUris.add(photoUri);
+
+        mChatPresenter.removePhoto(0);
+        assertThat(mChatPresenter.mPhotoUris).doesNotContain(photoUri);
+        verify(mockChatView).notifyPhotoRemoved(0);
     }
 }

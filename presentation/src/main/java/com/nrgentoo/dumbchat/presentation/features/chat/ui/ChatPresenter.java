@@ -57,6 +57,7 @@ class ChatPresenter extends BasePresenter<ChatView> {
     private Single<User> mMyselfSingle;
 
     List<MessageVM> mMessages;
+    List<String> mPhotoUris = new LinkedList<>();
 
     @Inject
     ChatPresenter() {
@@ -104,7 +105,7 @@ class ChatPresenter extends BasePresenter<ChatView> {
             int insertCount = messages.size();
             mMessages.addAll(messages);
 
-            getMvpView().notifyMassagesInserted(insertPos, insertCount);
+            getMvpView().notifyMessagesInserted(insertPos, insertCount);
         }
 
         @Override
@@ -118,11 +119,22 @@ class ChatPresenter extends BasePresenter<ChatView> {
         }
     }
 
-    public void postMessage(String message) {
+    public void appendPhoto(String photoUri) {
+        int insertPos = mPhotoUris.size();
+        mPhotoUris.add(photoUri);
+        getMvpView().notifyPhotoAppended(insertPos);
+    }
+
+    public void removePhoto(int position) {
+        mPhotoUris.remove(position);
+        getMvpView().notifyPhotoRemoved(position);
+    }
+
+    void postMessage(String message) {
         postMessage(message, null);
     }
 
-    public void postMessage(String message, @Nullable List<String> photoUris) {
+    void postMessage(String message, @Nullable List<String> photoUris) {
         PostMessageUseCase useCase = mPostMessageUseCaseProvider.get();
 
         Single<Message> postMessageSingle = mMyselfSingle
@@ -139,7 +151,7 @@ class ChatPresenter extends BasePresenter<ChatView> {
     @NonNull
     private List<Attachment<?>> makeAttachments(List<String> photoUris) {
         List<Attachment<?>> attachments = new LinkedList<>();
-        if (photoUris != null && !photoUris.isEmpty()) {
+        if (photoUris != null) {
             for (String photoUri : photoUris) {
                 ChatPhoto chatPhoto = ChatPhoto.builder().uri(photoUri).build();
                 PhotoAttachment photoAttachment = new PhotoAttachment(chatPhoto);

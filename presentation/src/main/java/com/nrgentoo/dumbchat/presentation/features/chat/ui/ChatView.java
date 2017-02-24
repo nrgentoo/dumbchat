@@ -8,5 +8,9 @@ import com.nrgentoo.dumbchat.presentation.core.ui.MvpView;
 
 public interface ChatView extends MvpView {
 
-    void notifyMassagesInserted(int insertPosition, int count);
+    void notifyMessagesInserted(int insertPosition, int count);
+
+    void notifyPhotoAppended(int insertPosition);
+
+    void notifyPhotoRemoved(int photoIndex);
 }
