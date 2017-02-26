@@ -1,5 +1,6 @@
 package com.nrgentoo.dumbchat.presentation.features.chat.ui.adapter;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.nrgentoo.dumbchat.presentation.features.chat.data.MessageVM;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +32,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     private static final int MESSAGE_RIGHT = 1;
 
     private List<MessageVM> messageVMList;
+
+    @Inject
+    Provider<PhotoAttachmentAdapter> mPhotoAttachmentAdapterProvider;
 
     @Inject
     public MessageAdapter() {
@@ -66,7 +71,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 throw new IllegalArgumentException("Unknown view type: " + viewType);
         }
 
-        return new MessageViewHolder(itemView);
+        return new MessageViewHolder(itemView, mPhotoAttachmentAdapterProvider.get());
     }
 
     @Override
@@ -91,10 +96,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         @BindView(R.id.rv_photos)
         RecyclerView rvPhotos;
 
-        public MessageViewHolder(View itemView) {
+        private final PhotoAttachmentAdapter mAdapter;
+
+        public MessageViewHolder(View itemView, PhotoAttachmentAdapter adapter) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             rvPhotos.setNestedScrollingEnabled(false);
+
+            mAdapter = adapter;
+            rvPhotos.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+            rvPhotos.setAdapter(adapter);
         }
 
         public void bind(MessageVM messageVM) {
@@ -109,7 +120,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 rvPhotos.setVisibility(View.GONE);
             } else {
                 rvPhotos.setVisibility(View.VISIBLE);
-                // TODO set photos
+                mAdapter.setAttachments(messageVM.attachments());
+                mAdapter.notifyDataSetChanged();
             }
         }
     }

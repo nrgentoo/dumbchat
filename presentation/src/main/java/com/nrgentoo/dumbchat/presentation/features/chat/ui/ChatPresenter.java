@@ -73,6 +73,7 @@ class ChatPresenter extends BasePresenter<ChatView> {
         super.attachView(mvpView);
 
         getMessages();
+        getMvpView().setPhotos(mPhotoUris);
     }
 
     @Override
@@ -191,11 +192,17 @@ class ChatPresenter extends BasePresenter<ChatView> {
         public void onSuccess(Message message) {
             mExecutor.unsubscribe();
             getMvpView().scrollEnd();
+            clearPhotos();
         }
 
         @Override
         public void onError(Throwable e) {
             mExecutor.unsubscribe();
         }
+    }
+
+    private void clearPhotos() {
+        mPhotoUris.clear();
+        getMvpView().notifyPhotosChanged();
     }
 }

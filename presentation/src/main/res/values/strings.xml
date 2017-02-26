@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">DumbChat</string>
+
+    <!-- Strings from ChatActivity -->
+    <string name="menu_attach_photo_from_camera">Камера</string>
+    <string name="menu_attach_photo_from_gallery">Из галереи</string>
+    <!-- End of strings from ChatActivity -->
 </resources>

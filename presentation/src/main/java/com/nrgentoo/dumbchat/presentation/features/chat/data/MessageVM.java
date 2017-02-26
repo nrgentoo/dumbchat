@@ -1,5 +1,7 @@
 package com.nrgentoo.dumbchat.presentation.features.chat.data;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 
 import java.util.List;
@@ -13,6 +15,7 @@ public abstract class MessageVM {
 
     public abstract long id();
 
+    @Nullable
     public abstract String text();
 
     public abstract UserVM author();
@@ -32,7 +35,7 @@ public abstract class MessageVM {
 
         public abstract Builder setId(long id);
 
-        public abstract Builder setText(String text);
+        public abstract Builder setText(@Nullable String text);
 
         public abstract Builder setAuthor(UserVM author);
 

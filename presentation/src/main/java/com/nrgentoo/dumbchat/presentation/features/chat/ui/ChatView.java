@@ -17,9 +17,13 @@ public interface ChatView extends MvpView {
 
     void notifyPhotoRemoved(int photoIndex);
 
+    void notifyPhotosChanged();
+
     String getTypedText();
 
     void setMessages(List<MessageVM> messages);
 
     void scrollEnd();
+
+    void setPhotos(List<String> photoUris);
 }
