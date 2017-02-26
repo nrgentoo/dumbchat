@@ -53,8 +53,10 @@ public class MessageRepositoryImpl implements MessageRepo {
 
     private void saveMessages(List<Message> messages) {
         try {
-            mUnitOfWork.get().insert(messages);
-            mUnitOfWork.get().commit();
+            UnitOfWork unitOfWork = mUnitOfWork.get();
+
+            unitOfWork.insert(messages);
+            unitOfWork.commit();
         } catch (Throwable throwable) {
             Log.e(TAG, "Error while saving messages to local db");
         }

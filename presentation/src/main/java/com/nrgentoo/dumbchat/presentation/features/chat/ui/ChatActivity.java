@@ -56,7 +56,9 @@ public class ChatActivity extends BaseActivity implements ChatView {
     }
 
     private void initViews() {
-        rvMessages.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        rvMessages.setLayoutManager(layoutManager);
         rvMessages.setAdapter(mAdapter);
     }
 
@@ -105,7 +107,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
     }
 
     @Override
-    public void scrollTo(int position) {
-        rvMessages.smoothScrollToPosition(position);
+    public void scrollEnd() {
+        rvMessages.smoothScrollToPosition(mAdapter.getItemCount());
     }
 }

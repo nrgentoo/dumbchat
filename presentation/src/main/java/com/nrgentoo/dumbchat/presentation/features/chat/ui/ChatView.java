@@ -21,5 +21,5 @@ public interface ChatView extends MvpView {
 
     void setMessages(List<MessageVM> messages);
 
-    void scrollTo(int position);
+    void scrollEnd();
 }

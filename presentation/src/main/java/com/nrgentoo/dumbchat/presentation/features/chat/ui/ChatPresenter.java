@@ -190,7 +190,7 @@ class ChatPresenter extends BasePresenter<ChatView> {
         @Override
         public void onSuccess(Message message) {
             mExecutor.unsubscribe();
-            getMvpView().scrollTo(mMessages.size());
+            getMvpView().scrollEnd();
         }
 
         @Override
