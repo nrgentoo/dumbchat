@@ -66,13 +66,13 @@ public class ChatPresenterTest {
     UseCaseExecutor mockUseCaseExecutor;
 
     @Mock
-    Provider<PostMessageUseCase> mockPostMessageUseCaseProvider;
-
-    @Mock
     PostMessageUseCase mockPostMessageUseCase;
 
     @Mock
     UseCaseExecutor mockPostMessageExecutor;
+
+    @Mock
+    Provider<UseCaseExecutor> mockUseCaseExecutorProvider;
 
     @Mock
     GetMyselfUseCase mockGetMyselfUseCase;
@@ -96,8 +96,8 @@ public class ChatPresenterTest {
         when(mockGetMessagesUseCase.execute(null))
                 .thenReturn(mMessagesSubject.toFlowable(BackpressureStrategy.BUFFER));
 
-        when(mockPostMessageUseCaseProvider.get())
-                .thenReturn(mockPostMessageUseCase);
+        when(mockUseCaseExecutorProvider.get())
+                .thenReturn(mockPostMessageExecutor);
 
         when(mockGetMyselfUseCase.execute(null))
                 .thenReturn(Single.just(mockMyselfUser));
@@ -107,8 +107,8 @@ public class ChatPresenterTest {
 
         mChatPresenter.mGetMessagesUseCase = mockGetMessagesUseCase;
         mChatPresenter.mGetMessagesExecutor = mockUseCaseExecutor;
-        mChatPresenter.mPostMessageUseCaseProvider = mockPostMessageUseCaseProvider;
-        mChatPresenter.mPostMessageExecutor = mockPostMessageExecutor;
+        mChatPresenter.mPostMessageUseCase = mockPostMessageUseCase;
+        mChatPresenter.mExecutorProvider = mockUseCaseExecutorProvider;
         mChatPresenter.setGetMyselfUseCase(mockGetMyselfUseCase);
 
         mockStatic(MessageMapperVM.class);

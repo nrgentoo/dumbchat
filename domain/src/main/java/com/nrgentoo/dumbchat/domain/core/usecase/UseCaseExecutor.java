@@ -75,8 +75,7 @@ public class UseCaseExecutor {
      */
     private void checkSubscription() {
         if (mDisposable != null && !mDisposable.isDisposed()) {
-            throw new IllegalStateException("FlowableUseCase " + getClass().getName() +
-                    " is already executing");
+            throw new IllegalStateException(getClass().getName() + " is already executing");
         }
     }
 }

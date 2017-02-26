@@ -47,6 +47,10 @@ dependencies {
     })
 
     compile deps.appcompat_v7
+    compile deps.recyclerView
+    compile deps.butterknife
+    apt deps.butterknifeCompiler
+    compile deps.glide
 
     apt  deps.daggerCompiler
     compile deps.dagger

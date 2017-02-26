@@ -49,10 +49,10 @@ class ChatPresenter extends BasePresenter<ChatView> {
     UseCaseExecutor mGetMessagesExecutor;
 
     @Inject
-    Provider<PostMessageUseCase> mPostMessageUseCaseProvider;
+    PostMessageUseCase mPostMessageUseCase;
 
     @Inject
-    UseCaseExecutor mPostMessageExecutor;
+    Provider<UseCaseExecutor> mExecutorProvider;
 
     private Single<User> mMyselfSingle;
 
@@ -100,6 +100,7 @@ class ChatPresenter extends BasePresenter<ChatView> {
         public void onNext(List<MessageVM> messages) {
             if (mMessages == null) {
                 mMessages = new LinkedList<>();
+                getMvpView().setMessages(mMessages);
             }
             int insertPos = mMessages.size();
             int insertCount = messages.size();
@@ -152,17 +153,16 @@ class ChatPresenter extends BasePresenter<ChatView> {
     }
 
     void postMessage(String message, @Nullable List<String> photoUris) {
-        PostMessageUseCase useCase = mPostMessageUseCaseProvider.get();
-
         Single<Message> postMessageSingle = mMyselfSingle
                 .map(user -> PostMessageUseCase.Params.builder()
                         .setMessageText(message)
                         .setAttachments(makeAttachments(photoUris))
                         .setAuthorId(user.getId())
                         .build())
-                .flatMap(useCase::execute);
+                .flatMap(mPostMessageUseCase::execute);
 
-        mPostMessageExecutor.execute(postMessageSingle, new PostMessageObserver());
+        UseCaseExecutor executor = mExecutorProvider.get();
+        executor.execute(postMessageSingle, new PostMessageObserver(executor));
     }
 
     @NonNull
@@ -181,14 +181,21 @@ class ChatPresenter extends BasePresenter<ChatView> {
 
     private class PostMessageObserver extends DisposableSingleObserver<Message> {
 
+        final UseCaseExecutor mExecutor;
+
+        private PostMessageObserver(UseCaseExecutor executor) {
+            this.mExecutor = executor;
+        }
+
         @Override
         public void onSuccess(Message message) {
-
+            mExecutor.unsubscribe();
+            getMvpView().scrollTo(mMessages.size());
         }
 
         @Override
         public void onError(Throwable e) {
-
+            mExecutor.unsubscribe();
         }
     }
 }

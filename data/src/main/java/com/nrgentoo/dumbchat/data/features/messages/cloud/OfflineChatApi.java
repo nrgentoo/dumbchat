@@ -5,6 +5,7 @@ import com.nrgentoo.dumbchat.data.features.users.repository.DbUserRepo;
 import com.nrgentoo.dumbchat.domain.features.messages.entity.Message;
 import com.nrgentoo.dumbchat.domain.features.users.entity.User;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class OfflineChatApi implements ChatApi {
                 .text("Привет. Сообщение с сервера")
                 .timeStamp(System.currentTimeMillis() - 50_000L)
                 .author(botUser)
+                .attachments(Collections.emptyList())
                 .build();
         messages.add(message);
 
@@ -44,6 +46,7 @@ public class OfflineChatApi implements ChatApi {
                 .text("Привет, бот.")
                 .timeStamp(System.currentTimeMillis() - 45_000L)
                 .author(myselfUser)
+                .attachments(Collections.emptyList())
                 .build();
         messages.add(message);
 
@@ -52,6 +55,7 @@ public class OfflineChatApi implements ChatApi {
                 .text("Я не бот. Я человек")
                 .timeStamp(System.currentTimeMillis() - 30_000L)
                 .author(botUser)
+                .attachments(Collections.emptyList())
                 .build();
         messages.add(message);
 
@@ -60,6 +64,7 @@ public class OfflineChatApi implements ChatApi {
                 .text("Может быть бот это ты? Докажи, что не бот.")
                 .timeStamp(System.currentTimeMillis() - 25_000L)
                 .author(botUser)
+                .attachments(Collections.emptyList())
                 .build();
         messages.add(message);
 
@@ -68,6 +73,7 @@ public class OfflineChatApi implements ChatApi {
                 .text("Слишком самоуверенный бот попался.")
                 .timeStamp(System.currentTimeMillis() - 20_000L)
                 .author(myselfUser)
+                .attachments(Collections.emptyList())
                 .build();
         messages.add(message);
 

@@ -22,7 +22,7 @@ public class DbModule {
 
     @Provides
     @PerApplication
-    PersistenceContext providePersistenceContext(DbContextImpl dbContext) {
+    PersistenceContext providePersistenceContext(DbContext dbContext) {
         return dbContext;
     }
 }

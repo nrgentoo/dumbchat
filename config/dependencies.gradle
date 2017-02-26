@@ -28,6 +28,9 @@ ext {
     final rxJavaVersion = '2.0.3'
     final rxAndroidVersion = '2.0.1'
 
+    final butterknifeVersion = '8.5.1'
+    final glideVersion = '3.7.0'
+
     // Testing
     final jUnitVersion = '4.12'
     final assertJVersion = '1.7.1'
@@ -75,13 +78,17 @@ ext {
 
     presentationDependencies = [
             appcompat_v7:           "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            recyclerView:           "com.android.support:recyclerview-v7:${supportLibraryVersion}",
             daggerCompiler:         "com.google.dagger:dagger-compiler:${daggerVersion}",
             dagger:                 "com.google.dagger:dagger:${daggerVersion}",
             javaxAnnotation:        "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
             autovalue:              "com.google.auto.value:auto-value:$autovalueVersion",
             autovalueAnnotations:   "com.jakewharton.auto.value:auto-value-annotations:" +
                     "$autovalueAnnotationsVersion",
-            rxAndroid:              "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}"
+            rxAndroid:              "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+            butterknife:            "com.jakewharton:butterknife:${butterknifeVersion}",
+            butterknifeCompiler:    "com.jakewharton:butterknife-compiler:${butterknifeVersion}",
+            glide:                  "com.github.bumptech.glide:glide:${glideVersion}",
     ]
 
     presentationTestDependencies = [
