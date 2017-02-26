@@ -1,5 +1,6 @@
 package com.nrgentoo.dumbchat.presentation.features.chat.ui.adapter;
 
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -104,12 +105,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             rvPhotos.setNestedScrollingEnabled(false);
 
             mAdapter = adapter;
-            rvPhotos.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+            LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext());
+            rvPhotos.setLayoutManager(layoutManager);
             rvPhotos.setAdapter(adapter);
+
+            DividerItemDecoration decoration = new DividerItemDecoration(itemView.getContext(),
+                    layoutManager.getOrientation());
+            rvPhotos.addItemDecoration(decoration);
         }
 
         public void bind(MessageVM messageVM) {
             tvMessage.setText(messageVM.text());
+
+            if (tvMessage.getText().toString().isEmpty()) {
+                tvMessage.setVisibility(View.GONE);
+            }
 
             Glide.with(itemView.getContext())
                     .load(messageVM.author().avatarUri())
