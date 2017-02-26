@@ -193,6 +193,7 @@ class ChatPresenter extends BasePresenter<ChatView> {
             mExecutor.unsubscribe();
             getMvpView().scrollEnd();
             clearPhotos();
+            getMvpView().clearText();
         }
 
         @Override

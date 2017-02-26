@@ -26,4 +26,6 @@ public interface ChatView extends MvpView {
     void scrollEnd();
 
     void setPhotos(List<String> photoUris);
+
+    void clearText();
 }

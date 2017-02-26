@@ -87,7 +87,6 @@ public class ChatActivity extends BaseActivity implements ChatView {
     @OnClick(R.id.bt_send)
     void onSendClicked() {
         mPresenter.postMessage();
-        etMessage.setText(null);
     }
 
     @OnClick(R.id.bt_attach)
@@ -197,5 +196,10 @@ public class ChatActivity extends BaseActivity implements ChatView {
     @Override
     public void setPhotos(List<String> photoUris) {
         mPhotosAdapter.setItems(photoUris);
+    }
+
+    @Override
+    public void clearText() {
+        etMessage.setText(null);
     }
 }
