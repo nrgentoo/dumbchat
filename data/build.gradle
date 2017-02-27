@@ -1,0 +1,62 @@
+apply plugin: 'com.android.library'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.neenbedankt.android-apt'
+
+//noinspection GroovyMissingReturnStatement
+android {
+    def globalConfig = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfig.getAt("androidCompileSdkVersion")
+    buildToolsVersion globalConfig.getAt("androidBuildToolsVersion")
+
+    defaultConfig {
+        minSdkVersion globalConfig.getAt("androidMinSdkVersion")
+        targetSdkVersion globalConfig.getAt("androidTargetSdkVersion")
+        versionCode globalConfig.getAt("androidVersionCode")
+        versionName globalConfig.getAt("androidVersionName")
+
+        testInstrumentationRunner globalConfig.getAt("testInstrumentationRunner")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    def deps = rootProject.ext.dataDependencies
+    def testDeps = rootProject.ext.dataTestDependencies
+
+    compile project(':domain')
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile deps.appcompat_v7
+
+    provided deps.autovalueAnnotations
+    apt deps.autovalue
+    provided deps.autovalueGson
+    apt deps.autovalueGson
+
+    apt  deps.daggerCompiler
+    compile deps.dagger
+    provided deps.javaxAnnotation
+
+    testCompile testDeps.junit
+    testCompile testDeps.mockito
+    testCompile testDeps.assertj
+    testCompile testDeps.robolectric
+
+    testApt deps.daggerCompiler
+    testCompile deps.dagger
+}

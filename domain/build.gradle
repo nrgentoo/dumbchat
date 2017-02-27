@@ -1,0 +1,35 @@
+plugins {
+    id "net.ltgt.apt" version "0.9"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'me.tatarka.retrolambda'
+
+dependencies {
+    def deps = rootProject.ext.domainDependencies
+    def testDeps = rootProject.ext.domainTestDependencies
+
+    compileOnly deps.autovalueAnnotations
+    apt deps.autovalue
+
+    compileOnly deps.lombok
+    apt deps.lombok
+
+    compile deps.rxJava
+
+    compileOnly deps.javaxAnnotations305
+    compileOnly deps.daggerCompiler
+    compileOnly deps.javaxAnnotation
+
+    testCompile testDeps.junit
+    testCompile testDeps.mockito
+    testCompile testDeps.assertj
+    testCompile deps.daggerCompiler
+    testCompileOnly deps.javaxAnnotation
+}
+
+//noinspection GroovyUnusedAssignment
+sourceCompatibility = "1.8"
+//noinspection GroovyUnusedAssignment
+targetCompatibility = "1.8"

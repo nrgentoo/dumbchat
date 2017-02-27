@@ -1,0 +1,73 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.neenbedankt.android-apt'
+
+//noinspection GroovyMissingReturnStatement
+android {
+    def globalConfig = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfig.getAt("androidCompileSdkVersion")
+    buildToolsVersion globalConfig.getAt("androidBuildToolsVersion")
+
+    defaultConfig {
+        minSdkVersion globalConfig.getAt("androidMinSdkVersion")
+        targetSdkVersion globalConfig.getAt("androidTargetSdkVersion")
+
+        applicationId globalConfig.getAt("androidApplicationId")
+
+        applicationId globalConfig.getAt("androidApplicationId")
+        versionCode globalConfig.getAt("androidVersionCode")
+        versionName globalConfig.getAt("androidVersionName")
+        testInstrumentationRunner globalConfig.getAt("testInstrumentationRunner")
+        testApplicationId globalConfig.getAt("testApplicationId")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    def deps = rootProject.ext.presentationDependencies
+    def testDeps = rootProject.ext.presentationTestDependencies
+
+    compile project(':domain')
+    compile project(':data')
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile deps.appcompat_v7
+    compile deps.recyclerView
+    compile deps.butterknife
+    apt deps.butterknifeCompiler
+    compile deps.glide
+
+    apt  deps.daggerCompiler
+    compile deps.dagger
+    provided deps.javaxAnnotation
+
+    provided deps.autovalueAnnotations
+    apt deps.autovalue
+
+    compile deps.rxAndroid
+
+    testCompile testDeps.junit
+    testCompile testDeps.mockito
+    testCompile testDeps.assertj
+    testCompile testDeps.powermock_mockito
+    testCompile testDeps.powermock_junit
+    testCompile testDeps.powermock
+
+    testApt deps.daggerCompiler
+    testCompile deps.dagger
+}
