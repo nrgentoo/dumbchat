@@ -22,10 +22,10 @@ import io.reactivex.subjects.BehaviorSubject;
 public class OfflineBotService implements BotService {
 
     // minimal period between messages
-    private static final int MIN_PERIOD = 2;
+    private static final int MIN_PERIOD = 10;
 
     // maximal period between messages
-    private static final int MAX_PERIOD = 3;
+    private static final int MAX_PERIOD = 15;
 
     // Bot account
     private static final User BOT_USER;
