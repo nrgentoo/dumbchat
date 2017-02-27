@@ -7,6 +7,7 @@ import com.nrgentoo.dumbchat.domain.core.executor.PostExecutionThread;
 import com.nrgentoo.dumbchat.domain.core.executor.ThreadExecutor;
 import com.nrgentoo.dumbchat.domain.core.repository.UnitOfWork;
 import com.nrgentoo.dumbchat.domain.features.messages.repository.MessageRepo;
+import com.nrgentoo.dumbchat.domain.features.settings.SettingsService;
 import com.nrgentoo.dumbchat.domain.features.users.repository.UserRepo;
 
 import dagger.Component;
@@ -20,7 +21,8 @@ import dagger.Component;
         ApplicationModule.class,
         RepositoryModule.class,
         DbModule.class,
-        ExecutorModule.class})
+        ExecutorModule.class,
+        SettingsModule.class})
 public interface ApplicationComponent {
 
     MessageRepo messageRepo();
@@ -36,4 +38,6 @@ public interface ApplicationComponent {
     PostExecutionThread postExecutionThread();
 
     Context context();
+
+    SettingsService settingsService();
 }

@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -19,6 +21,7 @@ import com.nrgentoo.dumbchat.presentation.features.chat.data.MessageVM;
 import com.nrgentoo.dumbchat.presentation.features.chat.service.DumbChatService;
 import com.nrgentoo.dumbchat.presentation.features.chat.ui.adapter.MessageAdapter;
 import com.nrgentoo.dumbchat.presentation.features.chat.ui.adapter.PhotoAttachmentRemovableAdapter;
+import com.nrgentoo.dumbchat.presentation.features.settings.SettingsActivity;
 
 import java.util.List;
 
@@ -159,6 +162,23 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
             mPresenter.appendPhoto(filePath);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.chat_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.chat_menu_settings:
+                startActivity(SettingsActivity.getStartIntent(this));
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     // --------------------------------------------------------------------------------------------
