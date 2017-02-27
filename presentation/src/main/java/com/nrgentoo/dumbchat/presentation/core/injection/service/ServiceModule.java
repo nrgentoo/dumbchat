@@ -24,6 +24,7 @@ public class ServiceModule {
 
     @Provides
     @PerService
+    @QServiceContext
     Context provideContext() {
         return mContext;
     }

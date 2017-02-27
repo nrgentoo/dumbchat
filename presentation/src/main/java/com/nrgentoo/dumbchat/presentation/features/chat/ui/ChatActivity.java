@@ -1,5 +1,6 @@
 package com.nrgentoo.dumbchat.presentation.features.chat.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -53,6 +54,10 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     @BindView(R.id.rv_attached_photos)
     RecyclerView rvAttachedPhotos;
+
+    public static Intent getStartIntent(Context mContext) {
+        return new Intent(mContext, ChatActivity.class);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
