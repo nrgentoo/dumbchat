@@ -33,6 +33,7 @@ import butterknife.OnClick;
 public class ChatActivity extends BaseActivity implements ChatView {
 
     private static final int REQUEST_FROM_GALLERY = 100;
+    private static final int REQUEST_CAPTURE_PHOTO = 200;
 
     @Inject
     ChatPresenter mPresenter;
@@ -97,6 +98,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
         menu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_attach_photo_from_camera:
+                    captureImage();
                     return true;
                 case R.id.menu_attach_photo_from_gallery:
                     launchGallery();
@@ -113,7 +115,14 @@ public class ChatActivity extends BaseActivity implements ChatView {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_FROM_GALLERY);
+    }
 
+    private void captureImage() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri fileUri = Uri.fromFile(mPresenter.makeCaptureFile());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+        startActivityForResult(intent, REQUEST_CAPTURE_PHOTO);
     }
 
     @Override
@@ -121,6 +130,9 @@ public class ChatActivity extends BaseActivity implements ChatView {
         switch (requestCode) {
             case REQUEST_FROM_GALLERY:
                 if (resultCode == RESULT_OK) onImagePicked(data);
+                break;
+            case REQUEST_CAPTURE_PHOTO:
+                if (resultCode == RESULT_OK) mPresenter.onPhotoCaptured();
                 break;
         }
     }

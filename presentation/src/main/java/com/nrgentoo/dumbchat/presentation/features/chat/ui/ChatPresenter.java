@@ -1,9 +1,13 @@
 package com.nrgentoo.dumbchat.presentation.features.chat.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.Resources;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.nrgentoo.dumbchat.R;
 import com.nrgentoo.dumbchat.domain.core.usecase.UseCaseExecutor;
 import com.nrgentoo.dumbchat.domain.features.attachments.entity.Attachment;
 import com.nrgentoo.dumbchat.domain.features.attachments.entity.ChatPhoto;
@@ -18,10 +22,13 @@ import com.nrgentoo.dumbchat.presentation.core.ui.BasePresenter;
 import com.nrgentoo.dumbchat.presentation.features.chat.data.MessageMapperVM;
 import com.nrgentoo.dumbchat.presentation.features.chat.data.MessageVM;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -59,8 +66,13 @@ class ChatPresenter extends BasePresenter<ChatView> {
     List<MessageVM> mMessages;
     List<String> mPhotoUris = new LinkedList<>();
 
+    private final Resources mResources;
+
+    private File mCapturedPhotoFile;
+
     @Inject
-    ChatPresenter() {
+    ChatPresenter(Context context) {
+        mResources = context.getResources();
     }
 
     @Inject
@@ -90,6 +102,30 @@ class ChatPresenter extends BasePresenter<ChatView> {
                         .map(user -> MessageMapperVM.transform(messages, user, DATE_FORMAT)));
 
         mGetMessagesExecutor.execute(messagesFlowable, new MessagesSubscriber());
+    }
+
+    public File makeCaptureFile() {
+        String appPhotosDirectoryName = mResources.getString(R.string.app_name);
+
+        File mediaStorageDir = new File(Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                appPhotosDirectoryName);
+
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+        mCapturedPhotoFile = new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
+        return mCapturedPhotoFile;
+    }
+
+    public void onPhotoCaptured() {
+        appendPhoto(mCapturedPhotoFile.getAbsolutePath());
+        mCapturedPhotoFile = null;
     }
 
     /**

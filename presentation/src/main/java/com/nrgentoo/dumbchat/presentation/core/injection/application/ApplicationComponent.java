@@ -1,5 +1,7 @@
 package com.nrgentoo.dumbchat.presentation.core.injection.application;
 
+import android.content.Context;
+
 import com.nrgentoo.dumbchat.domain.core.event.EventsPort;
 import com.nrgentoo.dumbchat.domain.core.executor.PostExecutionThread;
 import com.nrgentoo.dumbchat.domain.core.executor.ThreadExecutor;
@@ -32,4 +34,6 @@ public interface ApplicationComponent {
     ThreadExecutor threadExecutor();
 
     PostExecutionThread postExecutionThread();
+
+    Context context();
 }
