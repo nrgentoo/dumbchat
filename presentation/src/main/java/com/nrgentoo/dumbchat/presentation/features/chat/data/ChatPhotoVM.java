@@ -1,20 +1,20 @@
-package com.nrgentoo.dumbchat.data.features.attachments.chatphoto.model;
+package com.nrgentoo.dumbchat.presentation.features.chat.data;
 
 import com.google.auto.value.AutoValue;
 
 /**
- * Chat photo data transfer object
+ * Chat photo View Model
  */
 
 @AutoValue
-public abstract class ChatPhotoDto {
+public abstract class ChatPhotoVM {
 
     public abstract long id();
 
     public abstract String uri();
 
     public static Builder builder() {
-        return new AutoValue_ChatPhotoDto.Builder();
+        return new AutoValue_ChatPhotoVM.Builder();
     }
 
     @AutoValue.Builder
@@ -24,6 +24,6 @@ public abstract class ChatPhotoDto {
 
         public abstract Builder setUri(String uri);
 
-        public abstract ChatPhotoDto build();
+        public abstract ChatPhotoVM build();
     }
 }

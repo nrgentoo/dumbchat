@@ -18,6 +18,10 @@ public class CloudMessageRepo implements MessageRepo {
     @Inject
     ChatApi mChatApi;
 
+    @Inject
+    public CloudMessageRepo() {
+    }
+
     @Override
     public Message get(long id) {
         throw new IllegalStateException("Can't get message by id from cloud");

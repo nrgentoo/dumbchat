@@ -1,5 +1,6 @@
 package com.nrgentoo.dumbchat.data.features.messages.repository;
 
+import com.nrgentoo.dumbchat.domain.core.repository.UnitOfWork;
 import com.nrgentoo.dumbchat.domain.features.messages.entity.Message;
 
 import org.junit.After;
@@ -12,6 +13,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import dagger.Lazy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -32,6 +35,12 @@ public class MessageRepositoryImplTest {
     @Mock
     CloudMessageRepo mockCloudMessageRepo;
 
+    @Mock
+    Lazy<UnitOfWork> mockUnitOfWorkLazy;
+
+    @Mock
+    UnitOfWork mockUnitOfWork;
+
     private List<Message> mockMessages = Arrays.asList(
             mock(Message.class),
             mock(Message.class),
@@ -46,7 +55,11 @@ public class MessageRepositoryImplTest {
     public void setUp() throws Exception {
         mMessageRepository = new MessageRepositoryImpl();
         mMessageRepository.mDbMessageRepo = mockDbMessageRepo;
+        mMessageRepository.mUnitOfWork = mockUnitOfWorkLazy;
         mMessageRepository.mCloudMessageRepo = mockCloudMessageRepo;
+
+        when(mockUnitOfWorkLazy.get())
+                .thenReturn(mockUnitOfWork);
     }
 
     @After
@@ -72,6 +85,7 @@ public class MessageRepositoryImplTest {
         List<Message> messages = mMessageRepository.getAll();
 
         assertThat(messages).containsExactlyElementsOf(mockMessages);
+        verify(mockUnitOfWork).insert(messages);
     }
 
     @Test

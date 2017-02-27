@@ -8,4 +8,6 @@ import com.nrgentoo.dumbchat.domain.features.users.entity.User;
  */
 
 public interface UserRepo extends Repository<User> {
+
+    User getMyself();
 }

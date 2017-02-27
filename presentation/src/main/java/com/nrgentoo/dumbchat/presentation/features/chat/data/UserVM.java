@@ -1,13 +1,13 @@
-package com.nrgentoo.dumbchat.data.features.users.model;
+package com.nrgentoo.dumbchat.presentation.features.chat.data;
 
 import com.google.auto.value.AutoValue;
 
 /**
- * User data transfer object
+ * User view model
  */
 
 @AutoValue
-public abstract class UserDto {
+public abstract class UserVM {
 
     public abstract long id();
 
@@ -16,7 +16,7 @@ public abstract class UserDto {
     public abstract String avatarUri();
 
     public static Builder builder() {
-        return new AutoValue_UserDto.Builder();
+        return new AutoValue_UserVM.Builder();
     }
 
     @AutoValue.Builder
@@ -28,6 +28,6 @@ public abstract class UserDto {
 
         public abstract Builder setAvatarUri(String avatarUri);
 
-        public abstract UserDto build();
+        public abstract UserVM build();
     }
 }

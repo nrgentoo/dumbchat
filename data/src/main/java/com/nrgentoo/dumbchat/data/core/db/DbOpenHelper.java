@@ -10,6 +10,8 @@ import com.nrgentoo.dumbchat.data.features.messages.repository.MessageTable;
 import com.nrgentoo.dumbchat.data.features.users.repository.ChatUsers;
 import com.nrgentoo.dumbchat.data.features.users.repository.UserTable;
 
+import javax.inject.Inject;
+
 /**
  * Database open helper
  */
@@ -19,6 +21,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "chat_app";
     private static final int DATABASE_VERSION = 1;
 
+    @Inject
     public DbOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

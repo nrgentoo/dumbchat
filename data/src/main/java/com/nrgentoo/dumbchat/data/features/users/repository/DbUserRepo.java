@@ -63,6 +63,11 @@ public class DbUserRepo implements UserRepo {
     }
 
     @Override
+    public User getMyself() {
+        return get(ChatUsers.MYSELF_USER_ID);
+    }
+
+    @Override
     public void save(User user) throws Throwable {
         long localId = mDbContext.getDatabase().insertWithOnConflict(UserTable.TABLE_NAME, null,
                 UserTable.toContentValues(user), SQLiteDatabase.CONFLICT_REPLACE);
