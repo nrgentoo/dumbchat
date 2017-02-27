@@ -6,6 +6,7 @@ import com.nrgentoo.dumbchat.domain.features.bot.BotService;
 import com.nrgentoo.dumbchat.domain.features.messages.entity.Message;
 import com.nrgentoo.dumbchat.domain.features.messages.event.NewMessageEvent;
 import com.nrgentoo.dumbchat.domain.features.notification.NotificationService;
+import com.nrgentoo.dumbchat.domain.features.settings.SettingsService;
 
 import javax.inject.Inject;
 
@@ -30,6 +31,9 @@ public class OfflineChatService implements ChatService {
 
     @Inject
     AppVisibilityService mAppVisibilityService;
+
+    @Inject
+    SettingsService mSettingsService;
 
     @Inject
     NotificationService mNotificationService;
@@ -73,7 +77,8 @@ public class OfflineChatService implements ChatService {
                         .build();
                 mEventsPort.broadcast(NewMessageEvent.class, event);
 
-                if (mAppVisibilityService.isInBackground()) {
+                if (mSettingsService.notificationsEnabled() &&
+                        mAppVisibilityService.isInBackground()) {
                     mNotificationService.notifyNewMessage(message);
                 }
             } catch (Throwable throwable) {
