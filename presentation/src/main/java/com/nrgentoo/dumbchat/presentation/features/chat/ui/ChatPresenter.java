@@ -144,6 +144,9 @@ class ChatPresenter extends BasePresenter<ChatView> {
             mMessages.addAll(messages);
 
             getMvpView().notifyMessagesInserted(insertPos, insertCount);
+
+            // start chat service
+            getMvpView().startChatService();
         }
 
         @Override

@@ -8,4 +8,6 @@ import com.nrgentoo.dumbchat.domain.features.messages.entity.Message;
  */
 
 public interface MessageRepo extends Repository<Message> {
+
+    Message getLastMessage();
 }

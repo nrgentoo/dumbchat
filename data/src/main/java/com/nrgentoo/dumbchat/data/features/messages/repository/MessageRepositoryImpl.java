@@ -51,6 +51,11 @@ public class MessageRepositoryImpl implements MessageRepo {
         return messages;
     }
 
+    @Override
+    public Message getLastMessage() {
+        return mDbMessageRepo.getLastMessage();
+    }
+
     private void saveMessages(List<Message> messages) {
         try {
             UnitOfWork unitOfWork = mUnitOfWork.get();

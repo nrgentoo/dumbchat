@@ -28,4 +28,6 @@ public interface ChatView extends MvpView {
     void setPhotos(List<String> photoUris);
 
     void clearText();
+
+    void startChatService();
 }

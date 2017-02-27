@@ -6,12 +6,15 @@ import android.content.Context;
 import com.nrgentoo.dumbchat.presentation.core.injection.application.ApplicationComponent;
 import com.nrgentoo.dumbchat.presentation.core.injection.application.ApplicationModule;
 import com.nrgentoo.dumbchat.presentation.core.injection.application.DaggerApplicationComponent;
+import com.nrgentoo.dumbchat.presentation.features.appvisibility.ActivityLifecycleHandler;
 
 /**
  * Application class
  */
 
 public class DumbChatApplication extends Application {
+
+    private ActivityLifecycleHandler mActivityCounter;
 
     private ApplicationComponent mApplicationComponent;
 
@@ -27,5 +30,17 @@ public class DumbChatApplication extends Application {
         }
 
         return mApplicationComponent;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        mActivityCounter = new ActivityLifecycleHandler();
+        registerActivityLifecycleCallbacks(mActivityCounter);
+    }
+
+    public boolean isAppVisible() {
+        return mActivityCounter.isVisible();
     }
 }

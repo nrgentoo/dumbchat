@@ -78,6 +78,7 @@ public class OfflineChatService implements ChatService {
                 }
             } catch (Throwable throwable) {
 //                Log.e(TAG, "Error while inserting new message from Bot", throwable);
+                throwable.printStackTrace();
             }
         }
 
