@@ -1,5 +1,7 @@
 package com.nrgentoo.dumbchat.presentation.features.chat.ui;
 
+import android.content.Context;
+
 import com.nrgentoo.dumbchat.domain.core.usecase.UseCaseExecutor;
 import com.nrgentoo.dumbchat.domain.features.attachments.entity.Attachment;
 import com.nrgentoo.dumbchat.domain.features.attachments.entity.ChatPhoto;
@@ -91,7 +93,7 @@ public class ChatPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mChatPresenter = new ChatPresenter();
+        mChatPresenter = new ChatPresenter(mock(Context.class));
 
         when(mockGetMessagesUseCase.execute(null))
                 .thenReturn(mMessagesSubject.toFlowable(BackpressureStrategy.BUFFER));

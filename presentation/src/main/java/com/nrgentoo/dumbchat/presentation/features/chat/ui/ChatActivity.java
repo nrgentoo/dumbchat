@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.nrgentoo.dumbchat.R;
 import com.nrgentoo.dumbchat.presentation.core.ui.BaseActivity;
 import com.nrgentoo.dumbchat.presentation.features.chat.data.MessageVM;
+import com.nrgentoo.dumbchat.presentation.features.chat.service.DumbChatService;
 import com.nrgentoo.dumbchat.presentation.features.chat.ui.adapter.MessageAdapter;
 import com.nrgentoo.dumbchat.presentation.features.chat.ui.adapter.PhotoAttachmentRemovableAdapter;
 
@@ -161,11 +162,22 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     @Override
     public void notifyMessagesInserted(int insertPosition, int count) {
+        if (isScrolledToBottom()) {
+            scrollEnd();
+        }
+
         if (insertPosition == 0) {
             mAdapter.notifyDataSetChanged();
         } else {
             mAdapter.notifyItemRangeInserted(insertPosition, count);
         }
+    }
+
+    private boolean isScrolledToBottom() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) rvMessages.getLayoutManager();
+
+        return layoutManager.findLastCompletelyVisibleItemPosition() ==
+                (mAdapter.getItemCount() - 2);
     }
 
     @Override
@@ -213,5 +225,10 @@ public class ChatActivity extends BaseActivity implements ChatView {
     @Override
     public void clearText() {
         etMessage.setText(null);
+    }
+
+    @Override
+    public void startChatService() {
+        startService(DumbChatService.getStartIntent(this));
     }
 }

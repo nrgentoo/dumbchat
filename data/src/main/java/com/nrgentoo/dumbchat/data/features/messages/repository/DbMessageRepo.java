@@ -71,6 +71,23 @@ public class DbMessageRepo implements MessageRepo {
         return messages;
     }
 
+    @Override
+    public Message getLastMessage() {
+        Cursor cursor = mDbContext.getDatabase().rawQuery("SELECT * FROM " +
+                MessageTable.TABLE_NAME +
+                " WHERE " + MessageTable.COLUMN_ID + "= (SELECT MAX(" +
+                MessageTable.COLUMN_ID + ") FROM " + MessageTable.TABLE_NAME + ")", null);
+
+        Message message = null;
+        cursor.moveToFirst();
+        if (!cursor.isAfterLast()) {
+            message = getMessage(cursor);
+        }
+        cursor.close();
+
+        return message;
+    }
+
     private Message getMessage(Cursor cursor) {
         MessageDbo messageDbo = MessageTable.parseCursor(cursor);
         User author = mUserRepo.get(messageDbo.authorId());
@@ -89,10 +106,12 @@ public class DbMessageRepo implements MessageRepo {
                 null, MessageTable.toContentValues(message), SQLiteDatabase.CONFLICT_REPLACE);
         message.setId(localId);
 
-        for (Attachment<?> attachment : message.getAttachments()) {
-            attachment.setMessageId(localId);
+        if (message.getAttachments() != null) {
+            for (Attachment<?> attachment : message.getAttachments()) {
+                attachment.setMessageId(localId);
+            }
+            mAttachmentRepo.save(message.getAttachments());
         }
-        mAttachmentRepo.save(message.getAttachments());
     }
 
     @Override

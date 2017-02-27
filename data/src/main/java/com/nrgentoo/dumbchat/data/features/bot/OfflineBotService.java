@@ -82,7 +82,7 @@ public class OfflineBotService implements BotService {
                         e.onNext(message);
 
                         intervalSubject.onNext(newInterval);
-                    });
+                    }, e::onError);
 
             e.setCancellable(d::dispose);
         }, BackpressureStrategy.BUFFER);

@@ -33,6 +33,11 @@ public class CloudMessageRepo implements MessageRepo {
     }
 
     @Override
+    public Message getLastMessage() {
+        throw new IllegalStateException("Can't get last message from cloud");
+    }
+
+    @Override
     public void save(Message entity) throws Throwable {
         throw new IllegalStateException("Can't save message to cloud");
     }
