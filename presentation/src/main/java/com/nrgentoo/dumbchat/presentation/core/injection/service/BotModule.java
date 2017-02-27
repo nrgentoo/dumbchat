@@ -6,7 +6,7 @@ import com.nrgentoo.dumbchat.data.features.bot.OfflineBotService;
 import com.nrgentoo.dumbchat.domain.features.bot.BotService;
 import com.nrgentoo.dumbchat.domain.features.chat.AppVisibilityService;
 import com.nrgentoo.dumbchat.domain.features.notification.NotificationService;
-import com.nrgentoo.dumbchat.presentation.features.chat.service.AppVisibilityServiceImpl;
+import com.nrgentoo.dumbchat.presentation.features.appvisibility.AppVisibilityServiceImpl;
 import com.nrgentoo.dumbchat.presentation.features.notification.NotificationServiceImpl;
 
 import dagger.Module;
