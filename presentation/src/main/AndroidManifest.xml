@@ -22,6 +22,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".presentation.features.settings.SettingsActivity"
+            android:label="@string/settings_title"
+            android:parentActivityName=".presentation.features.chat.ui.ChatActivity" />
+
         <service
             android:name=".presentation.features.chat.service.DumbChatService"
             android:exported="false" />
